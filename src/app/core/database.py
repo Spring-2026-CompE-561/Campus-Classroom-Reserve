@@ -1,12 +1,10 @@
-from typing import TYPE_CHECKING
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 from app.core.settings import settings
 
-if TYPE_CHECKING:
-    from collections.abc import Generator
+# if TYPE_CHECKING:
+from collections.abc import Generator
 
 # Create database engine
 engine = create_engine(
