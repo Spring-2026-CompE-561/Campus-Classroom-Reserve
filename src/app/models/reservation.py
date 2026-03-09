@@ -1,5 +1,4 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
-from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
@@ -14,4 +13,3 @@ class Reservation(Base):
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     room_id = Column(Integer, ForeignKey("rooms.id"), nullable=False)
-

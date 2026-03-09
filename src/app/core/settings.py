@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    app_name: str = "Budget Buddy API"
+    app_name: str = "Campus Classroom Reserve"
     app_version: str = "1.0.0"
 
     secret_key: str = Field(
@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     )
 
     database_url: str = Field(
-        default="sqlite:///./budget_buddy.db",
+        default="sqlite:///./campus_classroom_reserve.db",
         description="Database connection URL",
     )
 
