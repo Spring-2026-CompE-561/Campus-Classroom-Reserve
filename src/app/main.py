@@ -11,7 +11,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.app_name,
-    description="An API for managing personal budgets and expenses.",
+    description="An API for managing classroom reservations",
     version=settings.app_version,
 )
 
