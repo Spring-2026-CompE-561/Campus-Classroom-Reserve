@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 
 import app.services.reservation as reservation_services
 from app.schemas.reservation import ReservationResponse, ReservationCreate
-from app.core.auth import oauth2_scheme
+
+# from app.core.auth import oauth2_scheme
 from app.core.database import get_db
 
 api_router = APIRouter(prefix="/reservations", tags=["reservations"])
@@ -16,7 +17,7 @@ api_router = APIRouter(prefix="/reservations", tags=["reservations"])
 async def create_reservation(
     reservation: ReservationCreate,
     db: Annotated[Session, Depends(get_db)],
-    token: Annotated[str, Depends(oauth2_scheme)],
+    # token: Annotated[str, Depends(oauth2_scheme)],
 ) -> ReservationResponse:
     """Create a Reservation."""
     # TODO: NYI
@@ -26,7 +27,7 @@ async def create_reservation(
 @api_router.get("/")
 async def get_reservations(
     db: Annotated[Session, Depends(get_db)],
-    token: Annotated[str, Depends(oauth2_scheme)],
+    # token: Annotated[str, Depends(oauth2_scheme)],
 ) -> list[ReservationResponse]:
     """Get Reservation List."""
     # TODO: NYI
@@ -37,7 +38,7 @@ async def get_reservations(
 async def get_reservation_by_id(
     reservation_id: int,
     db: Annotated[Session, Depends(get_db)],
-    token: Annotated[str, Depends(oauth2_scheme)],
+    # token: Annotated[str, Depends(oauth2_scheme)],
 ) -> list[ReservationResponse]:
     """Get specific reservation."""
     # TODO: NYI
@@ -51,7 +52,7 @@ async def update_reservation(
     end_time: datetime | None,
     purpose: str,
     db: Annotated[Session, Depends(get_db)],
-    token: Annotated[str, Depends(oauth2_scheme)],
+    # token: Annotated[str, Depends(oauth2_scheme)],
 ) -> list[ReservationResponse]:
     """Delete Reservation by ID."""
     # TODO: NYI
@@ -65,7 +66,7 @@ async def update_reservation(
 async def delete_reservation(
     reservation_id: int,
     db: Annotated[Session, Depends(get_db)],
-    token: Annotated[str, Depends(oauth2_scheme)],
+    # token: Annotated[str, Depends(oauth2_scheme)],
 ) -> list[ReservationResponse]:
     """Delete Reservation by ID."""
     # TODO: NYI
