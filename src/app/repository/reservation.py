@@ -10,7 +10,7 @@ class ReservationRepository:
     """Reservation repository data access."""
 
     @staticmethod
-    def get_all(db: Session) -> list[ReservationCreate] | None:
+    def get_all(db: Session) -> list[Reservation] | None:
         """Get all reservations in the system.
 
         Args:
@@ -21,7 +21,7 @@ class ReservationRepository:
         return db.query(Reservation).all()
 
     @staticmethod
-    def get_by_id(db: Session, reservation_id: int) -> list[ReservationCreate] | None:
+    def get_by_id(db: Session, reservation_id: int) -> list[Reservation] | None:
         """Get all reservations in the system.
 
         Args:
@@ -55,7 +55,7 @@ class ReservationRepository:
         return db_reservation
 
     @staticmethod
-    def delete(db: Session, reservation: Reservation) -> ReservationCreate:
+    def delete(db: Session, reservation: Reservation) -> Reservation:
         """Create a new reservation.
 
         Args:
@@ -67,3 +67,21 @@ class ReservationRepository:
 
         db.delete(reservation)
         db.commit()
+
+    @staticmethod
+    def update(
+        db: Session, reservation_id: int, reservation: Reservation
+    ) -> Reservation:
+        """Update a reservation.
+
+        Args:
+            db: Database Session
+            reservation_id: integer reservation id
+            reservation: Reservation information
+
+        Returns:
+            ReservationResponse
+        """
+        db.commit()
+        db.refresh(reservation)
+        return reservation

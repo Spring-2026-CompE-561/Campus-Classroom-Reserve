@@ -73,3 +73,56 @@ def get_reservation_by_id(
     Returns:
         ReservationResponse | None"""
     return ReservationRepository.get_by_id(db, reservation_id)
+
+
+def update_reservation(
+    db: Session, reservation_id: int, reservation_data: ReservationCreate
+) -> ReservationResponse:
+    """Update a reservation.
+
+    Args:
+        db: Database Session
+        reservation_id: integer reservation id
+        reservation: Reservation information
+
+    Returns:
+        ReservationResponse
+    """
+    # TODO: NYI
+    reservation = ReservationRepository.get_by_id(db, reservation_id)
+    if reservation is None:
+        raise ValueError(RESERVATION_NOT_FOUND_MSG)
+
+    if reservation_data.start_time is not None:
+        reservation.start_time = reservation_data.start_time
+    if reservation_data.end_time is not None:
+        reservation.end_time = reservation_data.end_time
+    if reservation_data.purpose is not None:
+        reservation.purpose = reservation_data.purpose
+
+    updated = ReservationRepository.update(
+        db, reservation_id=reservation_id, reservation=reservation
+    )
+
+    return ReservationResponse(
+        room_id=updated.room_id,
+        user_id=updated.room_id,
+        start_time=updated.start_time,
+        end_time=updated.end_time,
+        purpose=updated.purpose,
+    )
+
+
+def delete_reservation(db: Session, reservation_id: int) -> ReservationResponse:
+    """Delete a reservation.
+
+    Args:
+        db: Database Session
+        reservation_id: integer reservation id
+
+    Returns:
+        ReservationResponse
+    """
+    return ReservationRepository.delete(
+        db, ReservationRepository.get_by_id(db, reservation_id)
+    )
