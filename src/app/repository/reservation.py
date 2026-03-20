@@ -21,14 +21,14 @@ class ReservationRepository:
         return db.query(Reservation).all()
 
     @staticmethod
-    def get_by_id(db: Session, reservation_id: int) -> list[Reservation] | None:
-        """Get all reservations in the system.
+    def get_by_id(db: Session, reservation_id: int) -> Reservation | None:
+        """Get specific reservation by ID.
 
         Args:
             db: Database
 
         Returns:
-            list[ReservationCreate] | None"""
+            ReservationCreate | None"""
         return db.query(Reservation).filter(Reservation.id == reservation_id).first()
 
     @staticmethod
@@ -56,14 +56,14 @@ class ReservationRepository:
 
     @staticmethod
     def delete(db: Session, reservation: Reservation | None) -> Reservation:
-        """Create a new reservation.
+        """Delete a reservation.
 
         Args:
             db: Database
-            reservation: Reservation to create
+            reservation: Reservation to delete
 
         Returns:
-            Created Reservation"""
+            Deleted Reservation"""
         if reservation is None:
             return None
         db.delete(reservation)
