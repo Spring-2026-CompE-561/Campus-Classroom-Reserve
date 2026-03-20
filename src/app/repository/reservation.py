@@ -42,11 +42,11 @@ class ReservationRepository:
         Returns:
             Created Reservation"""
         db_reservation = Reservation(
-            start_time=ReservationCreate.start_time,
-            end_time=ReservationCreate.end_time,
-            purpose=ReservationCreate.purpose,
-            user_id=ReservationCreate.user_id,
-            room_id=ReservationCreate.room_id,
+            start_time=reservation.start_time,
+            end_time=reservation.end_time,
+            purpose=reservation.purpose,
+            user_id=reservation.user_id,
+            room_id=reservation.room_id,
         )
 
         db.add(db_reservation)
@@ -55,7 +55,7 @@ class ReservationRepository:
         return db_reservation
 
     @staticmethod
-    def delete(db: Session, reservation: Reservation) -> Reservation:
+    def delete(db: Session, reservation: Reservation | None) -> Reservation:
         """Create a new reservation.
 
         Args:
@@ -64,9 +64,11 @@ class ReservationRepository:
 
         Returns:
             Created Reservation"""
-
+        if reservation is None:
+            return None
         db.delete(reservation)
         db.commit()
+        return reservation
 
     @staticmethod
     def update(

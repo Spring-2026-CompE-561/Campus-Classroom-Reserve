@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 # from app.repository.category import RoomRepository
@@ -5,6 +6,7 @@ from app.repository.reservation import ReservationRepository
 from app.schemas.reservation import (
     ReservationCreate,
     ReservationResponse,
+    ReservationUpdate,
 )
 
 
@@ -13,7 +15,7 @@ ROOM_NOT_FOUND_MSG = "Room not found."
 
 
 def create_reservation(
-    db: Session, reservation: ReservationCreate, user_id: int
+    db: Session, reservation: ReservationCreate
 ) -> ReservationResponse:
     """Create a new reservation.
 
@@ -26,14 +28,15 @@ def create_reservation(
         Reservation: Created reservation
     """
     # TODO: Integrate with database
-    db_transaction = ReservationRepository.create(db, reservation, user_id)
+    db_reservation = ReservationRepository.create(db, reservation)
 
     return ReservationResponse(
-        room_id=db_transaction.room_id,
-        user_id=db_transaction.user_id,
-        start_time=db_transaction.start_time,
-        end_time=db_transaction.end_time,
-        purpose=db_transaction.purpose,
+        id=db_reservation.id,
+        room_id=db_reservation.room_id,
+        user_id=db_reservation.user_id,
+        start_time=db_reservation.start_time,
+        end_time=db_reservation.end_time,
+        purpose=db_reservation.purpose,
     )
 
 
@@ -51,6 +54,7 @@ def get_reservations(
     reservations = ReservationRepository.get_all(db)
     return [
         ReservationResponse(
+            id=reservation.id,
             room_id=reservation.room_id,
             user_id=reservation.user_id,
             start_time=reservation.start_time,
@@ -72,11 +76,18 @@ def get_reservation_by_id(
 
     Returns:
         ReservationResponse | None"""
-    return ReservationRepository.get_by_id(db, reservation_id)
+    reservation = ReservationRepository.get_by_id(db, reservation_id)
+    if reservation is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=RESERVATION_NOT_FOUND_MSG
+        )
+    return reservation
 
 
 def update_reservation(
-    db: Session, reservation_id: int, reservation_data: ReservationCreate
+    db: Session,
+    reservation_id: int,
+    reservation_data: ReservationUpdate,
 ) -> ReservationResponse:
     """Update a reservation.
 
@@ -91,7 +102,9 @@ def update_reservation(
     # TODO: NYI
     reservation = ReservationRepository.get_by_id(db, reservation_id)
     if reservation is None:
-        raise ValueError(RESERVATION_NOT_FOUND_MSG)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=RESERVATION_NOT_FOUND_MSG
+        )
 
     if reservation_data.start_time is not None:
         reservation.start_time = reservation_data.start_time
@@ -105,6 +118,7 @@ def update_reservation(
     )
 
     return ReservationResponse(
+        id=updated.id,
         room_id=updated.room_id,
         user_id=updated.room_id,
         start_time=updated.start_time,
@@ -123,6 +137,12 @@ def delete_reservation(db: Session, reservation_id: int) -> ReservationResponse:
     Returns:
         ReservationResponse
     """
-    return ReservationRepository.delete(
+    result = ReservationRepository.delete(
         db, ReservationRepository.get_by_id(db, reservation_id)
     )
+    if result is not None:
+        return result
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=RESERVATION_NOT_FOUND_MSG
+        )
