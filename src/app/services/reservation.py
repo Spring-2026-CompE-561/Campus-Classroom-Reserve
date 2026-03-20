@@ -29,7 +29,7 @@ def create_reservation(
     """
     # TODO: Integrate with database
     db_reservation = ReservationRepository.create(db, reservation)
-
+    
     return ReservationResponse(
         id=db_reservation.id,
         room_id=db_reservation.room_id,
