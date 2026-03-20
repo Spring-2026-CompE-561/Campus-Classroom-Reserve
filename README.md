@@ -4,4 +4,4 @@ Website for San Diego State University that students can use to find classrooms 
 
 # Usage Notes
 
-run `uv run fastapi dev`
+run `uv run fastapi dev src/app/main.py`

@@ -2,10 +2,17 @@
 
 This module defines Pydantic schemas for reservation data validation and serialization.
 """
+
 from datetime import datetime
 from pydantic import BaseModel
 
 MAX_DESCRIPTION_LENGTH = 255
+
+
+class ReservationUpdate(BaseModel):
+    start_time: datetime | None
+    end_time: datetime | None
+    purpose: str | None
 
 
 class ReservationBase(BaseModel):
@@ -21,7 +28,7 @@ class ReservationCreate(ReservationBase):
 
 
 class ReservationResponse(ReservationBase):
-    pass
+    id: int
 
     class Config:
         from_attributes = True
