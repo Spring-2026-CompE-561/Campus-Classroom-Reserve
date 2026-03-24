@@ -15,13 +15,16 @@ class UserBase(BaseModel):
     user_type: UserType
     disabled: bool = False
 
-
-
 class UserCreate(UserBase):
     """Schema for creating a new user."""
 
     password: str
 
+class UserUpdate(BaseModel):
+    name: str | None = None
+    email: EmailStr | None = None
+    user_type: UserType | None = None
+    disabled: bool | None = None
 
 class UserResponse(UserBase):
     """Schema for user response."""
