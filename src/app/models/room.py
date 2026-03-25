@@ -9,6 +9,7 @@ class Room(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     building = Column(String)
+    room_num = Column(Integer)
     capacity = Column(Integer)
     features = Column(String)  # TODO: Make this a list
 
