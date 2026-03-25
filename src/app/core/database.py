@@ -1,5 +1,3 @@
-import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
@@ -49,7 +47,3 @@ def get_test_db() -> Generator[Session]:
         yield db
     finally:
         db.close()
-        test_engine.dispose()
-        if os.path.exists(test_engine.url):
-            os.remove(test_engine.url)
-            print(f"Test database removed at {test_engine.url}")
