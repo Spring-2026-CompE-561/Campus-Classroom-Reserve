@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from app.models.reservation import Reservation
+from app.models.user import User, UserType
 from app.repository.room import (
     RoomRepository,
     RoomCreate,
@@ -19,12 +23,37 @@ class TestRooms:
         """Run this code before and after each test."""
         Base.metadata.create_all(bind=test_engine)
         self.db = get_test_db().send(None)
-        self.db.query(Room).delete(synchronize_session="fetch")
+        self.db = get_test_db().send(None)
+        self.db.query(Reservation).delete(synchronize_session="fetch")
+        self.db.commit()
+        if len(self.db.query(Reservation).all()) == 0:
+            self.db.add(
+                Reservation(
+                    room_id=0,
+                    user_id=0,
+                    start_time=datetime.now(),
+                    end_time=datetime.now(),
+                    purpose="DEBUG",
+                )
+            )
+        if len(self.db.query(User).all()) == 0:
+            self.db.add(
+                User(
+                    email="debug@debug.com",
+                    hashed_password="1234",
+                    name="Debug McDebuginson",
+                    user_type=UserType.admin,
+                    disabled=True,
+                )
+            )
         self.db.commit()
 
         yield
 
         self.db.query(Room).delete(synchronize_session="fetch")
+        self.db.query(Reservation).delete(synchronize_session="fetch")
+        self.db.query(User).delete(synchronize_session="fetch")
+
         self.db.commit()
 
     @pytest.mark.skip(reason="This is a helper function.")

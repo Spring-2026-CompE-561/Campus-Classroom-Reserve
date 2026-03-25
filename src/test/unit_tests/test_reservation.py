@@ -1,3 +1,5 @@
+from app.models.room import Room
+from app.models.user import User, UserType
 from app.repository.reservation import (
     ReservationRepository,
     ReservationCreate,
@@ -20,10 +22,25 @@ class TestReservations:
         self.db = get_test_db().send(None)
         self.db.query(Reservation).delete(synchronize_session="fetch")
         self.db.commit()
+        if len(self.db.query(Room).all()) == 0:
+            self.db.add(Room(building="DEBUG", room_num=0, capacity=0, features=[]))
+        if len(self.db.query(User).all()) == 0:
+            self.db.add(
+                User(
+                    email="debug@debug.com",
+                    hashed_password="1234",
+                    name="Debug McDebuginson",
+                    user_type=UserType.admin,
+                    disabled=True,
+                )
+            )
+        self.db.commit()
 
         yield
 
         self.db.query(Reservation).delete(synchronize_session="fetch")
+        self.db.query(Room).delete(synchronize_session="fetch")
+        self.db.query(User).delete(synchronize_session="fetch")
         self.db.commit()
 
     @pytest.mark.skip(reason="This is a helper function.")
