@@ -26,7 +26,7 @@ class Settings(BaseSettings):
         description="Database connection URL",
     )
 
-    class Config:
+    class ConfigDict:
         env_file = ".env"
         env_file_encoding = "utf-8"
 

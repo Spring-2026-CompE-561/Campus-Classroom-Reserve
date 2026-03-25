@@ -8,6 +8,7 @@ dependencies = [
     "fastapi[standard]>=0.129.0",
     "jwt>=1.4.0",
     "pwdlib>=0.3.0",
+    "pytest>=9.0.2",
     "ruff>=0.15.1",
     "sqlalchemy>=2.0.48",
 ]

@@ -30,5 +30,5 @@ class ReservationCreate(ReservationBase):
 class ReservationResponse(ReservationBase):
     id: int
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
