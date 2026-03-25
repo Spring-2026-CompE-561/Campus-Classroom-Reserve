@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, JSON, UniqueConstraint
-from sqlalchemy.orm import relationship
-
+from sqlalchemy import Column, Integer, String, JSON
+from sqlalchemy.orm import Mapped, relationship
 from app.core.database import Base
+from typing import List
+from app.models.reservation import Reservation
 
 
 class Room(Base):
@@ -16,5 +17,4 @@ class Room(Base):
         A more robust relational approach would be a separate
         room_features table with a foreign key to rooms.
     """
-    reservations = relationship("Reservation", back_populates="room")
-    __table_args__ = (UniqueConstraint("building", "room_num"),)
+    reservations: Mapped[List["Reservation"]] = relationship(backref="room")
