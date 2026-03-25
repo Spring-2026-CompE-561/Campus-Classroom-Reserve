@@ -117,6 +117,15 @@ class TestUsers:
         user_1 = UserRepository.get_by_id(self.db, 1)
         assert all_users[0] == user_1
 
+    def test_get_by_email(self):
+        """Test the get by ID function."""
+        self.create_debug_data()
+        all_users = self.db.query(User).all()
+        assert len(all_users) == 3
+
+        user_1 = UserRepository.get_by_email(self.db, "first@first.com")
+        assert all_users[0] == user_1
+
     def test_update(self):
         """Test the update function."""
         self.create_debug_data()
