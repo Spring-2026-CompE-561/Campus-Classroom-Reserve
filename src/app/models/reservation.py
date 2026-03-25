@@ -11,8 +11,9 @@ class Reservation(Base):
     end_time = Column(DateTime, nullable=False)
     purpose = Column(String, nullable=True)
 
-    user_id = Column(Integer, nullable=False)
-    # user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=True
+    )
     room_id: Mapped[int] = mapped_column(
         ForeignKey("rooms.id", ondelete="CASCADE"), nullable=True
     )
