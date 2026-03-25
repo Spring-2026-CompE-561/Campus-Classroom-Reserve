@@ -11,7 +11,7 @@ import pytest
 from app.schemas.room import RoomUpdate
 
 
-class TestReservations:
+class TestRooms:
     db: Session
 
     @pytest.fixture(autouse=True)

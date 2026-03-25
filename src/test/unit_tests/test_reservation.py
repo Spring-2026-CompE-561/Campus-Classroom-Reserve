@@ -10,7 +10,7 @@ from datetime import datetime
 import pytest
 
 
-class TestRooms:
+class TestReservations:
     db: Session
 
     @pytest.fixture(autouse=True)
