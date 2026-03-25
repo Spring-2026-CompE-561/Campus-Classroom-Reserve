@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime
-
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy.orm import Mapped, mapped_column
 from app.core.database import Base
 
 
@@ -13,5 +13,6 @@ class Reservation(Base):
 
     user_id = Column(Integer, nullable=False)
     # user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    room_id = Column(Integer, nullable=False)
-    # room_id = Column(Integer, ForeignKey("rooms.id"), nullable=False)
+    room_id: Mapped[int] = mapped_column(
+        ForeignKey("rooms.id", ondelete="CASCADE"), nullable=True
+    )

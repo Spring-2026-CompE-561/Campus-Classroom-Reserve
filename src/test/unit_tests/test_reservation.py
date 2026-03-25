@@ -10,7 +10,7 @@ from datetime import datetime
 import pytest
 
 
-class TestReservations:
+class TestRooms:
     db: Session
 
     @pytest.fixture(autouse=True)
@@ -22,6 +22,9 @@ class TestReservations:
         self.db.commit()
 
         yield
+
+        self.db.query(Reservation).delete(synchronize_session="fetch")
+        self.db.commit()
 
     @pytest.mark.skip(reason="This is a helper function.")
     def create_debug_data(self):
@@ -53,3 +56,51 @@ class TestReservations:
         assert all_reservations[0].id == 1
         assert all_reservations[0].user_id == 1234
         assert all_reservations[0].room_id == 42
+
+    def test_delete(self):
+        """Test the delete function."""
+        self.create_debug_data()
+        all_reservations = self.db.query(Reservation).all()
+        assert len(all_reservations) == 2
+
+        ReservationRepository.delete(self.db, all_reservations[0])
+        all_reservations = self.db.query(Reservation).all()
+        assert len(all_reservations) == 1
+
+    def test_get_all(self):
+        """Test the get all function."""
+        self.create_debug_data()
+        all_reservations = self.db.query(Reservation).all()
+        assert len(all_reservations) == 2
+
+        get_all = ReservationRepository.get_all(self.db)
+        assert all_reservations == get_all
+
+    def test_get_by_id(self):
+        """Test the get by ID function."""
+        self.create_debug_data()
+        all_reservations = self.db.query(Reservation).all()
+        assert len(all_reservations) == 2
+
+        reservation_1 = ReservationRepository.get_by_id(self.db, 1)
+        assert all_reservations[0] == reservation_1
+
+    def test_update(self):
+        """Test the update function."""
+        self.create_debug_data()
+        reservation = ReservationRepository.get_by_id(self.db, 1)
+        assert reservation is not None
+
+        start_time = datetime.fromisoformat("2026-03-25 12:00:00")
+        end_time = datetime.fromisoformat("2026-03-25 14:00:00")
+        purpose = "Updating!"
+        reservation.start_time = start_time
+        reservation.end_time = end_time
+        reservation.purpose = purpose
+
+        reservation_response = ReservationRepository.update(
+            self.db, reservation_id=1, reservation=reservation
+        )
+        all_reservations = self.db.query(Reservation).all()
+
+        assert all_reservations[0] == reservation_response == reservation
