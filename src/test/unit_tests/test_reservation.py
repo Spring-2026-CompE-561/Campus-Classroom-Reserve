@@ -20,6 +20,8 @@ class TestReservations:
         """Run this code before and after each test."""
         Base.metadata.create_all(bind=test_engine)
         self.db = get_test_db().send(None)
+        self.db.query(User).delete(synchronize_session="fetch")
+        self.db.query(Room).delete(synchronize_session="fetch")
         self.db.query(Reservation).delete(synchronize_session="fetch")
         self.db.commit()
         if len(self.db.query(Room).all()) == 0:
@@ -121,3 +123,6 @@ class TestReservations:
         all_reservations = self.db.query(Reservation).all()
 
         assert all_reservations[0] == reservation_response == reservation
+        assert all_reservations[0].purpose == purpose
+        assert all_reservations[0].start_time == start_time
+        assert all_reservations[0].end_time == end_time
