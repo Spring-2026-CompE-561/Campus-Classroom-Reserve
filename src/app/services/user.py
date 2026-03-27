@@ -124,14 +124,14 @@ def update_user(
             status_code=status.HTTP_404_NOT_FOUND, detail=USER_NOT_FOUND_MSG
         )
 
-    if user_data.name is not None:
+    if user_data.name is None:
         user_data.name = user.name
-    if user_data.email is not None:
+    if user_data.email is None:
         user_data.email = user.email
-    if user_data.user_type is not None:
+    if user_data.user_type is None:
         user_data.user_type = user.user_type
-    if user_data.disabled is not None:
-        user_data.disabled = user_data.disabled
+    if user_data.disabled is None:
+        user_data.disabled = user.disabled
 
     updated = UserRepository.update(db, user_id=user_id, user=user_data)
 
