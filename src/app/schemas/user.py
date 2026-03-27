@@ -47,9 +47,3 @@ class Token(BaseModel):
 
     access_token: str
     token_type: str
-
-
-class TokenData(BaseModel):
-    """Schema for data encoded inside a JWT."""
-
-    email: str | None = None
