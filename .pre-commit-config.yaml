@@ -41,3 +41,11 @@ repos:
         files: ^src/.*\.py$
       - id: ruff-format
         files: ^src/.*\.py$
+
+  - repo: local
+    hooks:
+    - id: pytest
+      name: pytest
+      entry: uv run pytest
+      language: system
+      pass_filenames: false
