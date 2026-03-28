@@ -4,6 +4,10 @@ Website for San Diego State University that students can use to find classrooms 
 
 # Usage Notes
 
+**Testing**
+
+run `uv run pytest`
+
 **Setup**
 
 Run the following
