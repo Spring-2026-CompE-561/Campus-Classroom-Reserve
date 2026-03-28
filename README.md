@@ -11,9 +11,9 @@ run `uv run pytest`
 **Setup**
 
 Run the following
+* `uv sync` => sync dependencies for the virtual environment (required on version change)
 * `uv venv` => create a virtual environment (one-time setup)
 * `source .venv/bin/activate` => activate virtual environment (required each time)
-* `uv sync` => sync dependencies for the virtual environment (required each time)
 
 **Run and Open Application**
 
@@ -21,7 +21,7 @@ run `uv run fastapi dev src/app/main.py`
 
 **Swagger UI**
 
-search "http://127.0.0.1:8000/docs" on a browser
+open "http://127.0.0.1:8000/docs" on a browser. Start with the "signup" endpoint and then enter your credentials in the top right of the UI to authenticate.
 
 **Swagger API Endpoints and their functions**
 
