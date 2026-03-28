@@ -7,8 +7,9 @@ Website for San Diego State University that students can use to find classrooms 
 **Setup**
 
 Run the following
-* `uv venv` (only a one-time command)
-* `source .venv/bin/activate`
+* `uv venv` => create a virtual environment (one-time setup)
+* `source .venv/bin/activate` => activate virtual environment (required each time)
+* `uv sync` => sync dependencies for the virtual environment (required each time)
 
 **Run and Open Application**
 
@@ -82,6 +83,3 @@ Reservation
   * Updates reservation by id
 * DELETE "/api/v1/reservations/{reservation_id}"
   * Deletes reservation by id
-
-Refresh Tokens
-* d
