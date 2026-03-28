@@ -17,11 +17,10 @@ class ReservationUpdate(BaseModel):
 
 class ReservationBase(BaseModel):
     room_id: int
-    user_id: int
+    user_id: int | None = None
     start_time: datetime
     end_time: datetime
     purpose: str | None
-
 
 class ReservationCreate(ReservationBase):
     pass
@@ -30,5 +29,5 @@ class ReservationCreate(ReservationBase):
 class ReservationResponse(ReservationBase):
     id: int
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
