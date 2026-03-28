@@ -154,3 +154,28 @@ def delete_reservation(db: Session, reservation_id: int) -> ReservationResponse:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=RESERVATION_NOT_FOUND_MSG
         )
+
+def get_reservations_by_user(
+    db: Session, user_id: int
+) -> list[ReservationResponse]:
+    """Get all reservations for a specific user.
+
+    Args:
+        db: Database Session
+        user_id: ID of the user
+
+    Returns:
+        list[ReservationResponse]: List of reservations
+    """
+    reservations = ReservationRepository.get_by_user_id(db, user_id)
+    return [
+        ReservationResponse(
+            id=reservation.id,
+            room_id=reservation.room_id,
+            user_id=reservation.user_id,
+            start_time=reservation.start_time,
+            end_time=reservation.end_time,
+            purpose=reservation.purpose,
+        )
+        for reservation in reservations
+    ]
