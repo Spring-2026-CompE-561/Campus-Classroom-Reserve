@@ -193,6 +193,7 @@ class TestRoutes:
         )
         assert response.status_code == 201
 
+    @pytest.mark.skip(reason="Issue 36: Duplicate rooms does not raise HTTP Error 400")
     def test_create_duplicate_room(self):
         """Cannot create two rooms with the same building and room number."""
         token = self.get_admin_token()
@@ -206,11 +207,7 @@ class TestRoutes:
             json={"building": "CS", "room_num": 202, "capacity": 20, "features": []},
             headers={"Authorization": f"Bearer {token}"},
         )
-        # assert response.status_code == 400
-        print("Test is currently failing, but is ignored.")
-        print(f"{response.status_code == 400}")
-        # TODO: Fix
-        assert True
+        assert response.status_code == 400
 
     def test_delete_room_as_student_forbidden(self):
         """Students cannot delete rooms."""

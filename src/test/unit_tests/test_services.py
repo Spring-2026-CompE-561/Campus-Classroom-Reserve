@@ -83,15 +83,13 @@ class TestServices:
         assert result.building == "CS"
         assert result.room_num == 202
 
+    @pytest.mark.skip(reason="Issue 36: Duplicate rooms does not raise HTTP Error 400")
     def test_create_duplicate_room(self):
         """Creating a duplicate room raises 400."""
-        # room_data = RoomCreate(building="ENG", room_num=101, capacity=30, features=[])
-        # with pytest.raises(HTTPException) as exc:
-        #     room_service.create_room(self.db, room_data)
-        print("Test is currently failing.")
-        assert True
-        # TODO: Fix
-        # assert exc.value.status_code == 400
+        room_data = RoomCreate(building="ENG", room_num=101, capacity=30, features=[])
+        with pytest.raises(HTTPException) as exc:
+            room_service.create_room(self.db, room_data)
+        assert exc.value.status_code == 400
 
     def test_update_room(self):
         """Update a room's capacity."""
