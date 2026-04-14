@@ -87,7 +87,7 @@ class ReservationRepository:
         db.commit()
         db.refresh(reservation)
         return reservation
-    
+
     @staticmethod
     def get_by_user_id(db: Session, user_id: int) -> list[Reservation] | None:
         """Get all reservations for a specific user.

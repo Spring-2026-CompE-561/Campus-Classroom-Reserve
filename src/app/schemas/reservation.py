@@ -22,6 +22,7 @@ class ReservationBase(BaseModel):
     end_time: datetime
     purpose: str | None
 
+
 class ReservationCreate(ReservationBase):
     pass
 

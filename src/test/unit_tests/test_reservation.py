@@ -130,7 +130,7 @@ class TestReservations:
     def test_get_by_user_id(self):
         """Test the get by user ID function."""
         self.create_debug_data()
-        
+
         reservations = ReservationRepository.get_by_user_id(self.db, 1234)
         assert len(reservations) == 1
         assert reservations[0].user_id == 1234

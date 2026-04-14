@@ -1,13 +1,4 @@
 {
-  "name": "campus-classroom-reseve",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
   "dependencies": {
     "next": "16.2.3",
     "npm": "^11.12.1",
@@ -29,8 +20,17 @@
     "sharp",
     "unrs-resolver"
   ],
+  "name": "campus-classroom-reseve",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "eslint",
+    "start": "next start"
+  },
   "trustedDependencies": [
     "sharp",
     "unrs-resolver"
-  ]
+  ],
+  "version": "0.1.0"
 }
