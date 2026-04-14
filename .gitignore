@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+#Local Database Files
+*.db
+
 # Distribution / packaging
 .Python
 build/
@@ -206,7 +209,9 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 debug_database.db
+.db
 
+# FRONTEND FILES
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, JSON
+from sqlalchemy import Column, Integer, String, JSON, UniqueConstraint
 from sqlalchemy.orm import Mapped, relationship
 from app.core.database import Base
 from typing import List
@@ -18,3 +18,7 @@ class Room(Base):
         room_features table with a foreign key to rooms.
     """
     reservations: Mapped[List["Reservation"]] = relationship(backref="room")
+
+    __table_args__ = (
+        UniqueConstraint("building", "room_num", name="uq_building_room_num"),
+    )

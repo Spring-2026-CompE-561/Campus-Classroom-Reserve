@@ -126,3 +126,11 @@ class TestReservations:
         assert all_reservations[0].purpose == purpose
         assert all_reservations[0].start_time == start_time
         assert all_reservations[0].end_time == end_time
+
+    def test_get_by_user_id(self):
+        """Test the get by user ID function."""
+        self.create_debug_data()
+        
+        reservations = ReservationRepository.get_by_user_id(self.db, 1234)
+        assert len(reservations) == 1
+        assert reservations[0].user_id == 1234
