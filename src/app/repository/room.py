@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.models.room import Room
 from app.schemas.room import RoomCreate, RoomUpdate
 
+
 class RoomRepository:
     """Room repository data access."""
 
@@ -12,12 +13,11 @@ class RoomRepository:
     def get_all(db: Session) -> list[Room] | None:
         """Get all rooms in the system."""
         return db.query(Room).all()
-    
+
     @staticmethod
     def get_by_id(db: Session, room_id: int) -> Room | None:
         """Get a specific room by ID."""
         return db.query(Room).filter(Room.id == room_id).first()
-    
 
     @staticmethod
     def get_by_building(db: Session, building: str) -> list[Room] | None:

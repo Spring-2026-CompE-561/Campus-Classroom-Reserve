@@ -42,8 +42,7 @@ async def create_room(
     """Create a new room. Admin only."""
     if current_user.user_type != UserType.admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return room_service.create_room(db, room_data)
 
@@ -58,8 +57,7 @@ async def replace_room(
     """Replace a room's data entirely. Admin only."""
     if current_user.user_type != UserType.admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return room_service.update_room(db, room_id, room_data)
 
@@ -74,8 +72,7 @@ async def update_room(
     """Partially update a room's data. Admin only."""
     if current_user.user_type != UserType.admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return room_service.update_room(db, room_id, room_data)
 
@@ -89,7 +86,6 @@ async def delete_room(
     """Delete a room by ID. Admin only."""
     if current_user.user_type != UserType.admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return room_service.delete_room(db, room_id)

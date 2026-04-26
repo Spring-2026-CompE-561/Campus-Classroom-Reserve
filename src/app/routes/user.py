@@ -43,8 +43,7 @@ async def get_users(
 ) -> list[UserResponse]:
     if current_user.user_type != UserType.admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return user_services.get_all(db)
 
@@ -64,8 +63,7 @@ async def get_user_by_id(
 ) -> UserResponse:
     if current_user.user_type != UserType.admin and current_user.id != user_id:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return user_services.get_user_by_id(db, user_id)
 
@@ -82,8 +80,7 @@ async def update_user(
 ) -> UserResponse:
     if current_user.user_type != UserType.admin and current_user.id != user_id:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     new_user = UserUpdate(
         name=name, email=email, user_type=user_type, disabled=disabled
@@ -99,7 +96,6 @@ async def delete_user(
 ) -> UserResponse:
     if current_user.user_type != UserType.admin and current_user.id != user_id:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized."
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
     return user_services.delete_user(db, user_id)

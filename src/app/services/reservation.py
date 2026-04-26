@@ -155,9 +155,8 @@ def delete_reservation(db: Session, reservation_id: int) -> ReservationResponse:
             status_code=status.HTTP_404_NOT_FOUND, detail=RESERVATION_NOT_FOUND_MSG
         )
 
-def get_reservations_by_user(
-    db: Session, user_id: int
-) -> list[ReservationResponse]:
+
+def get_reservations_by_user(db: Session, user_id: int) -> list[ReservationResponse]:
     """Get all reservations for a specific user.
 
     Args:

@@ -30,7 +30,9 @@ def get_room_by_id(db: Session, room_id: int) -> RoomResponse:
     """Get a specific room by ID."""
     room = RoomRepository.get_by_id(db, room_id)
     if room is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
+        )
     return RoomResponse(
         id=room.id,
         building=room.building,
@@ -48,7 +50,7 @@ def create_room(db: Session, room_data: RoomCreate) -> RoomResponse:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="A room with that building and room number already exists."
+            detail="A room with that building and room number already exists.",
         )
     return RoomResponse(
         id=room.id,
@@ -63,7 +65,9 @@ def update_room(db: Session, room_id: int, room_data: RoomUpdate) -> RoomRespons
     """Update a room."""
     room = RoomRepository.update(db, room_id, room_data)
     if room is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
+        )
     return RoomResponse(
         id=room.id,
         building=room.building,
@@ -77,7 +81,9 @@ def delete_room(db: Session, room_id: int) -> RoomResponse:
     """Delete a room."""
     room = RoomRepository.get_by_id(db, room_id)
     if room is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
+        )
     deleted = RoomRepository.delete(db, room)
     return RoomResponse(
         id=deleted.id,
