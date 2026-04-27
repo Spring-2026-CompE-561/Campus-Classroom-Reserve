@@ -2,7 +2,28 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Installation
+
+A few helpful links, depending on which package manager(s) you want to install + run
+* [nvm + node.js + yarn](https://dev.to/pu-lazydev/setting-up-nvm-nodejs-and-yarn-on-wsl-ubuntu-50bg)
+* [pnpm](https://pnpm.io/installation)
+* [bun](https://bun.com/docs/installation)
+
+### Running server
+
+First, make sure dependencies are installed:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Next, run the development server:
 
 ```bash
 npm run dev
@@ -11,7 +32,7 @@ yarn dev
 # or
 pnpm dev
 # or
-bun npm run dev
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
