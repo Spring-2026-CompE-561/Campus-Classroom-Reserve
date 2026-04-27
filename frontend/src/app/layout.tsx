@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gray-100">
-        {/* 
+        {/*
           AuthProvider wraps the entire app
           so auth state is available everywhere
         */}
