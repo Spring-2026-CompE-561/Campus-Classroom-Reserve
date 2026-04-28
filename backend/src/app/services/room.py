@@ -45,14 +45,14 @@ def get_room_by_id(db: Session, room_id: int) -> RoomResponse:
 def create_room(db: Session, room_data: RoomCreate) -> RoomResponse:
     """Create a new room."""
     # Check if there is a room in the same building with the same number
-    # building = RoomRepository.get_by_building(db, room_data.building)
-    # if building is not None:
-    #     for room in building:
-    #         if room.room_num == room_data.room_num:
-    #             raise HTTPException(
-    #                 status_code=status.HTTP_400_BAD_REQUEST,
-    #                 detail="A room with that building and room number already exists.",
-    #             )
+    building = RoomRepository.get_by_building(db, room_data.building)
+    if building is not None:
+        for room in building:
+            if room.room_num == room_data.room_num:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="A room with that building and room number already exists.",
+                )
 
     try:
         room = RoomRepository.create(db, room_data)

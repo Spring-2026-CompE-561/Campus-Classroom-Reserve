@@ -193,7 +193,6 @@ class TestRoutes:
         )
         assert response.status_code == 201
 
-    @pytest.mark.skip(reason="Issue 36: Duplicate rooms does not raise HTTP Error 400")
     def test_create_duplicate_room(self):
         """Cannot create two rooms with the same building and room number."""
         token = self.get_admin_token()
