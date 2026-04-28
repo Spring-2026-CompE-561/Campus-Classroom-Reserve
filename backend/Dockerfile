@@ -22,6 +22,7 @@ RUN apt-get update \
 # Copy only the dependency manifest first to maximize Docker layer cache reuse.
 COPY pyproject.toml /app/pyproject.toml
 
+
 # Parse `project.dependencies` from pyproject.toml and install them with pip.
 RUN python -c "import tomllib, subprocess; \
 deps=tomllib.load(open('/app/pyproject.toml','rb')).get('project',{}).get('dependencies',[]); \
@@ -30,10 +31,14 @@ subprocess.check_call(['pip','install',*deps])"
 # Copy the FastAPI application source code into the image.
 COPY src /app/src
 
+# Copy the example environment into the app so that it uses the postgres database rather than a local connection.
+# NOTE: For an "official deployment" this would need to be changed for security.
+COPY .env.example /app/.env
+
 # Create a dedicated non-root user for better runtime security.
 RUN useradd --create-home --shell /usr/sbin/nologin appuser
-RUN chown -R appuser:appuser /app/
-RUN chmod -R 777 /app/
+# RUN chown -R appuser:appuser /app/
+# RUN chmod -R 777 /app/
 
 # Run the container process as the non-root application user.
 USER appuser
@@ -41,4 +46,4 @@ USER appuser
 EXPOSE 8000
 
 # Start the API server so frontends can call it via HTTP on port 8000.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--env-file", ".env"]

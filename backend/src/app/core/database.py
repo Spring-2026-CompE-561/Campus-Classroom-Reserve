@@ -7,6 +7,7 @@ from app.core.settings import settings
 from collections.abc import Generator
 
 # Create database engine
+print(f'Creating engine for database: {settings.database_url}')
 engine = create_engine(
     settings.database_url,
     connect_args=(
