@@ -2,30 +2,32 @@
 
 Website for San Diego State University that students can use to find classrooms that are empty at the time, and book study sessions.
 
-# Usage Notes
+## Usage Notes
 
-**Testing**
+### Setup (using uv)
 
-run `uv run pytest`
+This repository is managed by [uv python](https://docs.astral.sh/uv/). Run the following to sync dependencies. Alternatively, use python 3.14 and create a virtual environment or simply use the provided docker compose.
+```bash
+uv sync
+# Then run the application with:
+uv run fastapi dev src/app/main.py
+```
 
-**Setup**
+### Setup (using Docker)
 
-Run the following
-* `uv sync` => sync dependencies for the virtual environment (required on version change)
-* `uv venv` => create a virtual environment (one-time setup)
-* `source .venv/bin/activate` => activate virtual environment (required each time)
+Install [docker](https://docs.docker.com/desktop/) on your machine. Run the following to build the backend image and start the environment. This will create a docker container that runs the backend on port `localhost:8000`
 
-**Run and Open Application**
+```bash
+docker compose up
+```
 
-run `uv run fastapi dev src/app/main.py`
+## Swagger UI
 
-**Swagger UI**
+Run the project as seen above and open [http://localhost:8000/docs](http://localhost:8000/docs) on a browser. Start with the "signup" endpoint and then enter your credentials in the top right of the UI to authenticate. **Make sure to sign up as an admin to see full functionality**.
 
-open "http://127.0.0.1:8000/docs" on a browser. Start with the "signup" endpoint and then enter your credentials in the top right of the UI to authenticate.
+### Swagger API Endpoints and their functions
 
-**Swagger API Endpoints and their functions**
-
-User
+#### User
 * POST "/api/v1/user/signup"
   * Registers a new user
   * Returns the created user
@@ -49,7 +51,7 @@ User
   * Deletes user from database by id
   * Raises error 403 if user is not an admin and the id entered in endpoint is not the same as their own id
 
-Room
+#### Room
 * GET "/api/v1/rooms/"
   * Obtains a list of all rooms in database
   * Accessible by any authenticated user
@@ -72,7 +74,7 @@ Room
   * Deletes room from database by id
   * Raises error 403 if current user is not an admin
 
-Reservation
+#### Reservation
 * POST "/api/v1/reservations/"
   * Creates a reservation
   * Can be done by any authenticated user

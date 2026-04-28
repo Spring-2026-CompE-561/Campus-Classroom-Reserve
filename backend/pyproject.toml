@@ -1,5 +1,5 @@
 [project]
-name = "campus-classroom-reserve"
+name = "campus-classroom-reserve-backend"
 version = "0.1.0"
 description = "A classroom reservation service for SDSU."
 readme = "README.md"

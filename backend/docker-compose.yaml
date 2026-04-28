@@ -1,20 +1,36 @@
+version: "3.9"
+name: campus-classroom-reserve
 services:
-  db:
-    image: postgres:17-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-ccr_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ccr_password}
-      POSTGRES_DB: ${POSTGRES_DB:-campus_classroom_reserve}
+  # db:
+  #   image: postgres:17-alpine
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER:-ccr_user}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ccr_password}
+  #     POSTGRES_DB: ${POSTGRES_DB:-campus_classroom_reserve}
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ccr_user} -d ${POSTGRES_DB:-campus_classroom_reserve}"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: campus-classroom-reserve-backend
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ccr_user} -d ${POSTGRES_DB:-campus_classroom_reserve}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
