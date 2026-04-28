@@ -46,7 +46,7 @@ def get_all(db: Session) -> list[UserResponse]:
     ]
 
 
-def get_user_by_id(db: Session, user_id: int) -> UserResponse | None:
+def get_user_by_id(db: Session, user_id: int) -> UserResponse:
     """Get a specific user
 
     Args:
@@ -74,7 +74,7 @@ def get_user_by_id(db: Session, user_id: int) -> UserResponse | None:
     )
 
 
-def get_user_by_email(db: Session, email: str) -> UserResponse | None:
+def get_user_by_email(db: Session, email: str) -> UserResponse:
     """Get a specific user
 
     Args:

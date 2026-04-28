@@ -15,7 +15,7 @@ api_router = APIRouter(prefix="/rooms", tags=["rooms"])
 @api_router.get("/", response_model=list[RoomResponse])
 async def read_rooms(
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None, # type: ignore
 ) -> list[RoomResponse]:
     """Get all rooms. Accessible by any authenticated user."""
     return room_service.get_rooms(db)
@@ -26,7 +26,7 @@ async def read_rooms(
 async def read_room(
     room_id: int,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None, # type: ignore
 ) -> RoomResponse:
     """Get a specific room by ID. Accessible by any authenticated user."""
     return room_service.get_room_by_id(db, room_id)
@@ -37,10 +37,10 @@ async def read_room(
 async def create_room(
     room_data: RoomCreate,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None, # type: ignore
 ) -> RoomResponse:
     """Create a new room. Admin only."""
-    if current_user.user_type != UserType.admin:
+    if current_user is None or current_user.user_type != UserType.admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
@@ -50,12 +50,12 @@ async def create_room(
 @api_router.put("/{room_id}", response_model=RoomResponse)
 async def replace_room(
     room_id: int,
-    room_data: RoomCreate,
+    room_data: RoomUpdate,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None, # type: ignore
 ) -> RoomResponse:
     """Replace a room's data entirely. Admin only."""
-    if current_user.user_type != UserType.admin:
+    if current_user is None or current_user.user_type != UserType.admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
@@ -67,10 +67,10 @@ async def update_room(
     room_id: int,
     room_data: RoomUpdate,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None # type: ignore
 ) -> RoomResponse:
     """Partially update a room's data. Admin only."""
-    if current_user.user_type != UserType.admin:
+    if current_user is None or current_user.user_type != UserType.admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )
@@ -81,10 +81,10 @@ async def update_room(
 async def delete_room(
     room_id: int,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,
+    current_user: Annotated[User, Depends(get_current_user)] = None # type: ignore
 ) -> RoomResponse:
     """Delete a room by ID. Admin only."""
-    if current_user.user_type != UserType.admin:
+    if current_user is None or current_user.user_type != UserType.admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized."
         )

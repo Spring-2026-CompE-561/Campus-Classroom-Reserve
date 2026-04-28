@@ -221,6 +221,7 @@ class TestRoutes:
         """Admins can delete rooms."""
         token = self.get_admin_token()
         room = self.db.query(Room).first()
+        assert room is not None
         response = client.delete(
             f"/api/v1/rooms/{room.id}", headers={"Authorization": f"Bearer {token}"}
         )
@@ -239,6 +240,7 @@ class TestRoutes:
         """Students can create reservations."""
         token = self.get_student_token()
         room = self.db.query(Room).first()
+        assert room is not None
         response = client.post(
             "/api/v1/reservations/",
             json={
@@ -256,6 +258,7 @@ class TestRoutes:
         student_token = self.get_student_token()
         admin_token = self.get_admin_token()
         room = self.db.query(Room).first()
+        assert room is not None
 
         # Admin creates a reservation
         client.post(
@@ -295,6 +298,7 @@ class TestRoutes:
         student_token = self.get_student_token()
         admin_token = self.get_admin_token()
         room = self.db.query(Room).first()
+        assert room is not None
 
         # Both create reservations
         client.post(

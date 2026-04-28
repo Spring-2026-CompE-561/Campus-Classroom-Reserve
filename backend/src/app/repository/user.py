@@ -68,7 +68,7 @@ class UserRepository:
             db.add(db_user)
             db.commit()
         except Exception:
-            return None
+            return User()
 
         db.refresh(db_user)
         return db_user

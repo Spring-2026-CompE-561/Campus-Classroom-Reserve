@@ -47,7 +47,7 @@ async def get_reservation_by_id(
     current_user=Depends(get_current_user),
 ) -> ReservationResponse:
     """Get specific reservation."""
-    return reservation_services.get_reservation_by_id(db, reservation_id)
+    return reservation_services.get_reservation_by_id(db, reservation_id) # type: ignore
 
 
 @api_router.put("/{reservation_id}")
@@ -61,7 +61,7 @@ async def update_reservation(
 ) -> ReservationResponse:
     """Update Reservation by ID."""
     new_reservation = ReservationUpdate(
-        id=reservation_id, start_time=start_time, end_time=end_time, purpose=purpose
+        start_time=start_time, end_time=end_time, purpose=purpose
     )
     return reservation_services.update_reservation(db, reservation_id, new_reservation)
 

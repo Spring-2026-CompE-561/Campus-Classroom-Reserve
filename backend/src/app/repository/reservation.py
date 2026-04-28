@@ -3,7 +3,7 @@
 from sqlalchemy.orm import Session
 
 from app.models.reservation import Reservation
-from app.schemas.reservation import ReservationCreate
+from app.schemas.reservation import ReservationCreate, ReservationResponse
 
 
 class ReservationRepository:
@@ -32,7 +32,7 @@ class ReservationRepository:
         return db.query(Reservation).filter(Reservation.id == reservation_id).first()
 
     @staticmethod
-    def create(db: Session, reservation: ReservationCreate) -> ReservationCreate:
+    def create(db: Session, reservation: ReservationCreate) -> ReservationResponse:
         """Create a new reservation.
 
         Args:
@@ -55,7 +55,7 @@ class ReservationRepository:
         return db_reservation
 
     @staticmethod
-    def delete(db: Session, reservation: Reservation | None) -> Reservation:
+    def delete(db: Session, reservation: Reservation | None) -> Reservation | None:
         """Delete a reservation.
 
         Args:
