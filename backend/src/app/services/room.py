@@ -22,7 +22,7 @@ def get_rooms(db: Session) -> list[RoomResponse]:
             capacity=room.capacity,
             features=room.features,
         )
-        for room in rooms
+        for room in rooms # type: ignore
     ]
 
 
@@ -85,10 +85,19 @@ def delete_room(db: Session, room_id: int) -> RoomResponse:
             status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
         )
     deleted = RoomRepository.delete(db, room)
-    return RoomResponse(
-        id=deleted.id,
-        building=deleted.building,
-        room_num=deleted.room_num,
-        capacity=deleted.capacity,
-        features=deleted.features,
-    )
+    if deleted is not None:
+        return RoomResponse(
+            id=deleted.id,
+            building=deleted.building,
+            room_num=deleted.room_num,
+            capacity=deleted.capacity,
+            features=deleted.features,
+        )
+    else:
+        return RoomResponse(
+            id=room.id,
+            building=room.building,
+            room_num=room.room_num,
+            capacity=room.capacity,
+            features=room.features,
+        )

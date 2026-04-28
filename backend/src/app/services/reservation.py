@@ -52,17 +52,20 @@ def get_reservations(
         list[ReservationResponse]: List of reservations
     """
     reservations = ReservationRepository.get_all(db)
-    return [
-        ReservationResponse(
-            id=reservation.id,
-            room_id=reservation.room_id,
-            user_id=reservation.user_id,
-            start_time=reservation.start_time,
-            end_time=reservation.end_time,
-            purpose=reservation.purpose,
-        )
-        for reservation in reservations
-    ]
+    if reservations is not None:
+        return [
+            ReservationResponse(
+                id=reservation.id,
+                room_id=reservation.room_id,
+                user_id=reservation.user_id,
+                start_time=reservation.start_time,
+                end_time=reservation.end_time,
+                purpose=reservation.purpose,
+            )
+            for reservation in reservations
+        ]
+    else:
+        return []
 
 
 def get_reservation_by_id(
@@ -107,7 +110,6 @@ def update_reservation(
     Returns:
         ReservationResponse
     """
-    # TODO: NYI
     reservation = ReservationRepository.get_by_id(db, reservation_id)
     if reservation is None:
         raise HTTPException(
@@ -167,14 +169,17 @@ def get_reservations_by_user(db: Session, user_id: int) -> list[ReservationRespo
         list[ReservationResponse]: List of reservations
     """
     reservations = ReservationRepository.get_by_user_id(db, user_id)
-    return [
-        ReservationResponse(
-            id=reservation.id,
-            room_id=reservation.room_id,
-            user_id=reservation.user_id,
-            start_time=reservation.start_time,
-            end_time=reservation.end_time,
-            purpose=reservation.purpose,
-        )
-        for reservation in reservations
-    ]
+    if reservations is not None:
+        return [
+            ReservationResponse(
+                id=reservation.id,
+                room_id=reservation.room_id,
+                user_id=reservation.user_id,
+                start_time=reservation.start_time,
+                end_time=reservation.end_time,
+                purpose=reservation.purpose,
+            )
+            for reservation in reservations
+        ]
+    else:
+        return []

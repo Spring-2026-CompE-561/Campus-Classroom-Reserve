@@ -11,8 +11,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-campus_classroom_reserve}
     ports:
       - "5432:5432"
-    # networks:
-    #   - app-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -28,15 +26,8 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
-    # networks:
-    #   - app-network
-    # network_mode: host
     depends_on:
       - db
 
 volumes:
   postgres_data:
-
-# networks:
-#   app-network:
-#     driver: bridge

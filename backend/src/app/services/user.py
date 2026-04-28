@@ -42,7 +42,7 @@ def get_all(db: Session) -> list[UserResponse]:
             user_type=user.user_type,
             disabled=user.disabled,
         )
-        for user in users
+        for user in users # type: ignore
     ]
 
 
@@ -134,7 +134,10 @@ def update_user(
         user_data.disabled = user.disabled
 
     updated = UserRepository.update(db, user_id=user_id, user=user_data)
-
+    if updated is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=USER_NOT_FOUND_MSG
+        )
     return UserResponse(
         id=updated.id,
         name=updated.name,

@@ -38,7 +38,7 @@ class UserResponse(UserBase):
 
     id: int
     reservations: list[ReservationResponse] = []
-
+    hashed_password: str
     model_config = {"from_attributes": True}
 
 
