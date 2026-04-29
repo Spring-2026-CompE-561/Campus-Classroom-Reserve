@@ -33,7 +33,7 @@ const signupSchema = z
 	.object({
     firstName: z.string(),
     lastName: z.string(),
-    role: z.enum(['student', 'faculty', 'admin']),
+    role: z.enum(['Student', 'Faculty', 'Admin']),
 		email: z.string().email("Invalid email address."),
 		password: z
 			.string()
@@ -57,7 +57,7 @@ export default function SignUpCard() {
     defaultValues:{
       firstName: "",
       lastName: "",
-      role: "student",
+      role: "Student",
       email: "",
       password: "",
       passwordConfirm: ""
@@ -155,14 +155,14 @@ export default function SignUpCard() {
             render={() => (
             <Field className="md:col-span-2">
               <FieldLabel htmlFor="form-role">Role</FieldLabel>
-              <Select defaultValue="student">
+              <Select defaultValue="Student">
                 <SelectTrigger id="form-role">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="student">Student</SelectItem>
-                  <SelectItem value="faculty">Faculty</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="Student">Student</SelectItem>
+                  <SelectItem value="Faculty">Faculty</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
