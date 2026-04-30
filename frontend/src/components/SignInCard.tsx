@@ -1,24 +1,65 @@
 "use client";
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Field,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { User, Lock, Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/context/AuthContext";
+
+
+const signinSchema = z
+	.object({
+		email: z.string().email("Invalid email address."),
+		password: z
+			.string()
+			.min(4, "Password must be at least 4 characters.")
+			.max(32, "Password must be at most 32 characters."),
+	})
 
 export default function SignInCard() {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleLogin = async () => {
+  const form = useForm<z.infer<typeof signinSchema>>({
+    resolver: zodResolver(signinSchema),
+    defaultValues:{
+      email: "",
+      password: "",
+    },
+  })
+
+  const handleLogin = async (data: z.infer<typeof signinSchema>) => {
     setError("");
     setLoading(true);
 
-    const success = await login(username, password);
+    const success = await login(data.email, data.password);
 
     setLoading(false);
 
@@ -30,77 +71,84 @@ export default function SignInCard() {
   };
 
   return (
+
     <div className="w-[360px] bg-white rounded-xl overflow-hidden shadow-lg flex-shrink-0" style={{ height: "580px", overflowY: "auto" }}>
-
-      {/* Header */}
-      <div className="bg-[#1a1a1a] px-7 py-6">
-        <h2 className="text-white text-2xl font-bold">Sign In</h2>
+      <Card className="w-full max-w-sm">
+      <CardHeader className="bg-[#1a1a1a] px-7 py-6">
+        <CardTitle className="text-white text-2xl font-bold">Sign In</CardTitle>
         <div className="w-8 h-1 bg-[#C41230] mt-2 rounded" />
-      </div>
-
-      {/* Body */}
-      <div className="px-7 py-6 flex flex-col gap-4">
-
-        {/* Username */}
-        <div>
-          <label className="text-sm font-medium text-gray-700 block mb-1">Username</label>
-          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 gap-2">
-            <User className="w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              className="flex-1 text-sm outline-none bg-transparent"
-            />
-          </div>
-        </div>
-
-        {/* Password */}
-        <div>
-          <label className="text-sm font-medium text-gray-700 block mb-1">Password</label>
-          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 gap-2">
-            <Lock className="w-4 h-4 text-gray-400" />
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="flex-1 text-sm outline-none bg-transparent"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Error message */}
-        {error && (
-          <p className="text-sm text-red-600">{error}</p>
-        )}
-
-        {/* Sign In button */}
-        <button
-          onClick={handleLogin}
+      </CardHeader>
+      <CardContent className="px-7 py-6 flex gap-4">
+        <form id="signup-form" onSubmit={form.handleSubmit(handleLogin)}>
+          <Controller
+            name="email"
+            control={form.control}
+            render={({ field, fieldState}) => (
+              <Field className='' data-invalid={fieldState.invalid}>
+                <FieldLabel className="text-sm font-medium text-gray-700 block mb-1" htmlFor="form-signup-email">Username</FieldLabel>
+                <Input
+                {... field}
+                id="form-signup-email"
+                type="email"
+                placeholder="joe.smith@example.com"
+                aria-invalid={fieldState.invalid}
+                required/>
+                {fieldState.invalid && (
+                <FieldError errors={[fieldState.error]} />)}
+              </Field>
+            )
+          }/>
+          <Controller
+            name="password"
+            control={form.control}
+            render={({field, fieldState}) => (
+              <Field className='' data-invalid={fieldState.invalid}>
+                <FieldLabel className="text-sm font-medium text-gray-700 block mb-1" htmlFor="form-signup-password">Password</FieldLabel>
+                <div className="flex">
+                  <Input
+                  {... field}
+                  id="form-signup-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="********"
+                  aria-invalid={fieldState.invalid}
+                  className="flex-1 text-sm outline-none bg-transparent"
+                  required/>
+                  <Button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-gray-400 hover:text-gray-600 flex-shrink-0 bg-transparent"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </Button>
+                </div>
+                {fieldState.invalid && (
+                <FieldError errors={[fieldState.error]} />)}
+              </Field>
+            )
+          }/>
+        </form>
+      </CardContent>
+      <CardFooter className="flex-col gap-2">
+        <Button
+          type="submit"
+          form="signup-form"
           disabled={loading}
           className="w-full bg-[#C41230] text-white font-semibold py-3 rounded-lg hover:bg-red-800 transition disabled:opacity-60"
         >
-          {loading ? "Signing in..." : "Sign In"}
-        </button>
-
-        {/* Sign Up */}
-        <div className="text-center pt-1">
-          <p className="text-sm text-gray-500 mb-3">Don&apos;t have an account?</p>
-          <Link href="/signup" className="w-full block border border-[#C41230] text-[#C41230] font-semibold py-3 rounded-lg hover:bg-red-50 transition text-center text-sm">
+          {loading ? "Sigining In..." : "Sign In"}
+        </Button>
+        <p className="text-sm text-muted-foreground">
+          Don&apos;t have an account? {" "}
+          <a href="/signup" className="w-full">
             Sign Up
-          </Link>
-        </div>
-
-      </div>
+          </a>
+        </p>
+      </CardFooter>
+    </Card>
     </div>
   );
 }

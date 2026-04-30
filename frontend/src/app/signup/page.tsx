@@ -22,7 +22,7 @@ export default function SignUpPage() {
         <div className="absolute inset-0 bg-black/40" />
 
         {/* Left side text */}
-        <div className="absolute left-8 top-1/2 -translate-y-1/2 bg-black/70 rounded-xl p-6 max-w-sm z-10">
+        <div className="absolute left-8 top-1/2 -translate-y-1/2 bg-black/70 rounded-xl p-6 max-w-sm z-10 hidden md:block">
           <h2 className="text-white text-3xl font-bold leading-tight">
             Create Your Account.<br />Start Reserving.
           </h2>
@@ -34,8 +34,9 @@ export default function SignUpPage() {
           </p>
         </div>
 
+
         {/* Centered sign-up form */}
-        <div className="absolute inset-0 flex items-center justify-center z-10 translate-x-24">
+        <div className="absolute inset-0 flex items-center justify-center z-10 md:translate-x-24">
           <SignUpCard />
         </div>
       </div>
