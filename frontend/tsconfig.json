@@ -13,6 +13,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
+    "types": ["vitest/globals"],
     "paths": {
       "@/*": [
         "./src/*"
