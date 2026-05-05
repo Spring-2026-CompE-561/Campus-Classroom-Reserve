@@ -14,13 +14,6 @@ import {
   FieldError,
   FieldLabel,
 } from "@/components/ui/field"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -29,6 +22,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/context/AuthContext";
+
 
 
 const signinSchema = z
@@ -78,7 +72,7 @@ export default function SignInCard() {
         <CardTitle className="text-white text-2xl font-bold">Sign In</CardTitle>
         <div className="w-8 h-1 bg-[#C41230] mt-2 rounded" />
       </CardHeader>
-      <CardContent className="px-7 py-6 flex gap-4">
+      <CardContent className="px-7 py-6 flex-center gap-4">
         <form id="signup-form" onSubmit={form.handleSubmit(handleLogin)}>
           <Controller
             name="email"
@@ -102,7 +96,7 @@ export default function SignInCard() {
             name="password"
             control={form.control}
             render={({field, fieldState}) => (
-              <Field className='' data-invalid={fieldState.invalid}>
+              <Field className='py-4' data-invalid={fieldState.invalid}>
                 <FieldLabel className="text-sm font-medium text-gray-700 block mb-1" htmlFor="form-signup-password">Password</FieldLabel>
                 <div className="flex">
                   <Input
@@ -130,6 +124,12 @@ export default function SignInCard() {
               </Field>
             )
           }/>
+
+          {error && (
+            <Card className="border-red-200 py-4 bg-red-50">
+              <CardContent className="text-red-600 text-sm">{error}</CardContent>
+            </Card>
+          )}
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
