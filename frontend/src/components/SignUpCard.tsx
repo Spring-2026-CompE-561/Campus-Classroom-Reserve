@@ -119,7 +119,7 @@ export default function SignUpCard() {
             name="firstName"
             control={form.control}
             render={({ field, fieldState}) => (
-              <Field className="" data-invalid={fieldState.invalid}>
+              <Field className="mt-2 mr-1" data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-first-name">First Name</FieldLabel>
                 <Input
                 {... field}
@@ -137,7 +137,7 @@ export default function SignUpCard() {
             name="lastName"
             control={form.control}
             render={({ field, fieldState}) => (
-              <Field className="" data-invalid={fieldState.invalid}>
+              <Field className="mt-2 ml-1" data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-last-name">Last Name</FieldLabel>
                 <Input
                 {... field}
@@ -155,7 +155,7 @@ export default function SignUpCard() {
             name="role"
             control={form.control}
             render={() => (
-            <Field className="md:col-span-2">
+            <Field className="md:col-span-2 mt-2">
               <FieldLabel htmlFor="form-role">Role</FieldLabel>
               <Select defaultValue="Student">
                 <SelectTrigger id="form-role">
@@ -173,7 +173,7 @@ export default function SignUpCard() {
             name="email"
             control={form.control}
             render={({ field, fieldState}) => (
-              <Field className='md:col-span-2' data-invalid={fieldState.invalid}>
+              <Field className='md:col-span-2 mt-2' data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-email">Email</FieldLabel>
                 <Input
                 {... field}
@@ -191,7 +191,7 @@ export default function SignUpCard() {
             name="password"
             control={form.control}
             render={({field, fieldState}) => (
-              <Field className='md:col-span-2' data-invalid={fieldState.invalid}>
+              <Field className='md:col-span-2 mt-2' data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-password">Password</FieldLabel>
                 <div className="flex">
                   <Input
@@ -222,7 +222,7 @@ export default function SignUpCard() {
             name="passwordConfirm"
             control={form.control}
             render={({field, fieldState}) => (
-              <Field className='md:col-span-2' data-invalid={fieldState.invalid}>
+              <Field className='md:col-span-2 mt-2' data-invalid={fieldState.invalid}>
                 <FieldLabel className="flex" htmlFor="form-signup-confirm-password">Confirm Password</FieldLabel>
                 <div className="flex">
                   <Input
@@ -249,7 +249,13 @@ export default function SignUpCard() {
               </Field>
             )
           }/>
+          {error && (
+            <Card className="md:col-span-2 border-red-200 py-2 mt-2 bg-red-50">
+              <CardContent className="text-red-600 text-sm">{error}</CardContent>
+            </Card>
+          )}
         </form>
+
       </CardContent>
       <CardFooter className="flex-col gap-2">
         <Button
