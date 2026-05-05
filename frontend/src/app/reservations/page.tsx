@@ -608,6 +608,18 @@ export default function ReservationsPage() {
                     </label>
                   ))}
                 </div>
+
+                <Separator />
+
+                <div className="flex flex-col gap-1.5">
+                  <Button
+                    onClick={resetFilters}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
+                  >
+                    Reset Filters
+                  </Button>
+                </div>
+
               </CardContent>
             </Card>
           </aside>
@@ -689,13 +701,13 @@ export default function ReservationsPage() {
                   <span className="text-gray-300 group-hover:text-gray-500 text-base">›</span>
                 </a>
                 <Separator />
-                <a href="/rooms" className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-gray-50 transition group">
+                {/* <a href="/rooms" className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-gray-50 transition group">
                   <div className="flex items-center gap-2.5">
                     <Building2 className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-700">Browse All Rooms</span>
                   </div>
                   <span className="text-gray-300 group-hover:text-gray-500 text-base">›</span>
-                </a>
+                </a> */}
               </CardContent>
             </Card>
 
