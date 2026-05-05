@@ -220,6 +220,14 @@ export default function ReservationsPage() {
     }
     const startTime = `${startDate}T${startTimeVal}`;
     const endTime = `${endDate}T${endTimeVal}`;
+    if (new Date(startTime) > new Date(endTime)){
+      setSubmitError("Start time must be after end time.");
+      return;
+    }
+    if (!isRoomAvailable(selectedRoom, allReservations, startTime, endTime)){
+      setSubmitError("Room is already booked during this time period");
+      return;
+    }
     setSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);
@@ -371,7 +379,7 @@ export default function ReservationsPage() {
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Standard classroom in {BUILDING_NAMES[selectedRoom.building] ?? selectedRoom.building}.
                     Capacity of {selectedRoom.capacity} people
-                    {selectedRoom.features?.length > 0 ? `, equipped with ${selectedRoom.features.slice(0, 2).map(formatFeature).join(" and ")}.` : "."}
+                    {selectedRoom.features?.length > 0 ? `. Equipped with ${selectedRoom.features.slice(0, 2).map(formatFeature).join(" and ")}.` : "."}
                   </p>
                 </div>
               </div>
@@ -391,7 +399,7 @@ export default function ReservationsPage() {
                   {resLoading && <p className="text-sm text-gray-400">Loading...</p>}
 
                   {!resLoading && roomReservations.length === 0 && (
-                    <div className="flex items-center justify-center gap-2 text-sm text-[#C41230] bg-red-50 border border-red-100 rounded-lg px-4 py-3">
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-75 bg-gray-50 border border-gray-100 rounded-lg px-4 py-3">
                       <CalendarDays className="w-4 h-4" />
                       No existing bookings for this room.
                     </div>
@@ -410,9 +418,14 @@ export default function ReservationsPage() {
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-800">{res.purpose}</p>
+                          {formatDate(res.start_time) === formatDate(res.end_time) && (
                           <p className="text-xs text-gray-400 mt-0.5">
                             {formatDate(res.start_time)} · {formatTime(res.start_time)} – {formatTime(res.end_time)}
-                          </p>
+                          </p>)}
+                          {formatDate(res.start_time) !== formatDate(res.end_time) && (
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            {formatDate(res.start_time)} · {formatTime(res.start_time)} – {formatDate(res.end_time)} · {formatTime(res.end_time)}
+                          </p>)}
                         </div>
                       </div>
                     ))}
