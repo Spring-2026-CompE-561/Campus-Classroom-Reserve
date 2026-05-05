@@ -143,7 +143,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-5">
             <h1 className="text-2xl font-bold text-gray-800">My Reservations</h1>
             <Button asChild className="bg-[#C41230] hover:bg-[#a80f29] text-white gap-2">
-              <Link href="/make-reservation">
+              <Link href="/reservations">
                 <Plus className="w-4 h-4" />
                 New Reservation
               </Link>
@@ -164,7 +164,7 @@ export default function HomePage() {
             <Card>
               <CardContent className="pt-6 text-center text-gray-500 text-sm">
                 You have no reservations yet.{" "}
-                <Link href="/make-reservation" className="text-[#C41230] hover:underline font-medium">
+                <Link href="/reservations" className="text-[#C41230] hover:underline font-medium">
                   Create one now.
                 </Link>
               </CardContent>

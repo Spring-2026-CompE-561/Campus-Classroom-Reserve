@@ -14,7 +14,6 @@ const publicLinks = [
 
 const privateLinks = [
   { href: "/home", label: "Home", icon: Home },
-  { href: "/rooms", label: "Rooms", icon: Building2 },
   { href: "/reservations", label: "Make a Reservation", icon: CalendarPlus },
   { href: "/about", label: "About", icon: Info },
 ];
