@@ -698,7 +698,7 @@ export default function ReservationsPage() {
                     <CalendarDays className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-700">My Reservations</span>
                   </div>
-                  <span className="text-gray-300 group-hover:text-gray-500 text-base">›</span>
+                  <span className="text-gray-300 group-hover:text-gray-500 text-base">&#8250;</span>
                 </a>
                 <Separator />
                 {/* <a href="/rooms" className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-gray-50 transition group">
