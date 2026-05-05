@@ -11,26 +11,23 @@ from app.services import room as room_service
 api_router = APIRouter(prefix="/rooms", tags=["rooms"])
 
 
-# Any logged in user can view rooms
+# Anyone can view rooms
 @api_router.get("/", response_model=list[RoomResponse])
 async def read_rooms(
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None, # type: ignore
 ) -> list[RoomResponse]:
-    """Get all rooms. Accessible by any authenticated user."""
+    """Get all rooms. Publicly accessible."""
     return room_service.get_rooms(db)
 
 
-# Any logged in user can view a specific room
+# Anyone can view a specific room
 @api_router.get("/{room_id}", response_model=RoomResponse)
 async def read_room(
     room_id: int,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None, # type: ignore
 ) -> RoomResponse:
-    """Get a specific room by ID. Accessible by any authenticated user."""
+    """Get a specific room by ID. Publicly accessible."""
     return room_service.get_room_by_id(db, room_id)
-
 
 # Only admins can create, update, or delete rooms
 @api_router.post("/", response_model=RoomResponse, status_code=201)

@@ -5,7 +5,7 @@ export default function AboutPage() {
 			{`	
 				/* skipped h1, since h1 alters the navbar header title */
 				h2 {
-					font-size: 48px;
+					font-size: 36px; /* was 48px */
 					font-weight: bold;
 					text-align: center;
 					margin-top: 20px;
@@ -13,7 +13,7 @@ export default function AboutPage() {
 				}
 
 				h3 {
-					font-size: 32px;
+					font-size: 24px; /* was 32px */
 					font-weight: bold;
 					text-align: left;
 					margin-top: 20px;
@@ -22,12 +22,12 @@ export default function AboutPage() {
 
 				p {
 					text-align: left;
-					font-size: 20px;
+					font-size: 16px; /* was 20px */
 					margin-bottom: 20px;
 				}
 
 				ul {
-					font-size: 20px;
+					font-size: 16px; /* was 20px */
 					list-style-type: disc;
 					margin-left: 30px;
 					margin-bottom: 20px;
