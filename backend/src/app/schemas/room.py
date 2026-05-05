@@ -9,7 +9,7 @@ from app.schemas.reservation import ReservationResponse
 
 class RoomBase(BaseModel):
     building: str
-    room_num: int
+    room_num: str
     capacity: int
     features: list[str] | None = None
 
@@ -21,7 +21,7 @@ class RoomCreate(RoomBase):
 # Schema for updating a room (all fields optional)
 class RoomUpdate(BaseModel):
     building: str | None = None
-    room_num: int | None = None
+    room_num: str | None = None
     capacity: int | None = None
     features: list[str] | None = None
 
