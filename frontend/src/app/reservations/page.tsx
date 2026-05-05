@@ -124,9 +124,9 @@ function isRoomAvailable(room: Room, allReservations: Reservation[], from: strin
     });
 }
 
-export default function ReservationsPage() {
+export default function ReservationsPage(){
   const { token } = useAuth();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   const [rooms, setRooms] = useState<Room[]>([]);
   const [allReservations, setAllReservations] = useState<Reservation[]>([]);
@@ -179,16 +179,16 @@ export default function ReservationsPage() {
       .catch(() => {});
   }, [token]);
 
-  useEffect(() => {
-    const roomId = searchParams.get("roomId");
-    if (!roomId || rooms.length === 0) return;
-    const matchingRoom = rooms.find((room) => String(room.id) === roomId);
-    if (matchingRoom) {
-      setSelectedRoom(matchingRoom);
-      setSubmitSuccess(false);
-      setSubmitError(null);
-    }
-  }, [searchParams, rooms]);
+  // useEffect(() => {
+  //   const roomId = searchParams.get("roomId");
+  //   if (!roomId || rooms.length === 0) return;
+  //   const matchingRoom = rooms.find((room) => String(room.id) === roomId);
+  //   if (matchingRoom) {
+  //     setSelectedRoom(matchingRoom);
+  //     setSubmitSuccess(false);
+  //     setSubmitError(null);
+  //   }
+  // }, [searchParams, rooms]);
 
   useEffect(() => {
     if (!selectedRoom) return;
