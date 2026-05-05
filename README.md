@@ -7,6 +7,14 @@ Website for San Diego State University that students can use to find classrooms 
 
 Install both the back end and the front end (see installation instructions below). Then start both the backend and the frontend instances. View the backend documentation at [http://localhost:8000/docs](http://localhost:8000/docs). View the front end of the website at [http://localhost:3000](http://localhost:3000)!
 
+### Starting the environment using Docker Compose
+
+From the root directory (`/`), run the following:
+
+```bash
+docker compose up
+```
+
 ## Installation
 
 ### Frontend
