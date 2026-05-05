@@ -23,9 +23,9 @@ import argparse
 # (building, room_num, capacity, features)
 ROOMS = [
     # ARTN — Art North
-    ("A",    "300B",  30,  ["touchlink", "hdmi", "zoom_ready"]),
+    # ("A",    "300B",  30,  ["touchlink", "hdmi", "zoom_ready"]),
     ("A",    "412",   70,  ["touchlink", "hdmi", "zoom_ready", "automated_capture"]),
-    ("A",    "512B",  40,  ["control_panel", "hdmi"]),
+    # ("A",    "512B",  40,  ["control_panel", "hdmi"]),
 
     # AH — Adams Humanities
     ("AH",   "2103",  42,  ["touchlink", "hdmi"]),
@@ -64,7 +64,7 @@ ROOMS = [
     ("E",    "201",   50,  ["touchlink", "hdmi", "automated_capture"]),
     ("E",    "300",   49,  ["control_panel", "hdmi", "key_required", "microphone", "automated_capture"]),
     ("E",    "328",   49,  ["touchlink", "hdmi", "automated_capture"]),
-    ("E",    "423B",  52,  ["touchlink", "hdmi", "automated_capture"]),
+    # ("E",    "423B",  52,  ["touchlink", "hdmi", "automated_capture"]),
     ("E",    "427",   40,  ["touchlink", "hdmi", "automated_capture"]),
 
     # ENS — Exercise and Nutritional Sciences
@@ -168,7 +168,7 @@ ROOMS = [
     ("NE",   "175",   40,  ["control_panel", "hdmi"]),
     ("NE",   "271",   52,  ["touchlink", "hdmi", "key_required"]),
     ("NE",   "273",   34,  ["control_panel", "hdmi", "key_required"]),
-    ("NE",   "278B",  36,  ["touchlink", "hdmi"]),
+    # ("NE",   "278B",  36,  ["touchlink", "hdmi"]),
 
     # OP — Ellen Ochoa Pavilion
     ("OP",   "201",   100, ["touchlink", "hdmi", "microphone", "key_required", "automated_capture"]),
