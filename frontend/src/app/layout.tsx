@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -32,8 +33,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
-      <body className="bg-transparent">
+    <html lang="en" className={cn("font-sans", inter.variable)} suppressHydrationWarning>
+      <body className="bg-transparent min-h-screen flex flex-col">
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         {/*
           AuthProvider wraps the entire app
           so auth state is available everywhere
@@ -43,11 +50,14 @@ export default function RootLayout({
           <Navbar />
 
           {/* Page content */}
-          <main>{children}</main>
+          <main className="flex-1">
+            {children}
+          </main>
 
           {/* Footer */}
           <Footer />
         </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
