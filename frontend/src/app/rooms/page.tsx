@@ -353,7 +353,7 @@ export default function RoomsPage() {
 
                     <Button
                       size="sm"
-                      onClick={() => router.push("/")}
+                      onClick={() => router.push(`/?redirect=/reservations&roomId=${room.id}`)}
                       variant="outline"
                       className="shrink-0 border-[#C41230] text-[#C41230] bg-white hover:bg-red-50"
                     >
