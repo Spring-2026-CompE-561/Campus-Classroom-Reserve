@@ -50,6 +50,8 @@ export default function SignInCard() {
   })
 
   const handleLogin = async (data: z.infer<typeof signinSchema>) => {
+    console.log("redirect:", searchParams.get("redirect"));
+    console.log("roomId:", searchParams.get("roomId"));
     setError("");
     setLoading(true);
 
@@ -125,30 +127,56 @@ export default function SignInCard() {
             )
           }/>
 
-          {error && (
-            <Card className="border-red-200 py-4 bg-red-50">
-              <CardContent className="text-red-600 text-sm">{error}</CardContent>
-            </Card>
-          )}
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <Button
-          type="submit"
-          form="signup-form"
-          disabled={loading}
-          className="w-full bg-[#C41230] text-white font-semibold py-3 rounded-lg hover:bg-red-800 transition disabled:opacity-60"
-        >
-          {loading ? "Sigining In..." : "Sign In"}
-        </Button>
-        <p className="text-sm text-muted-foreground">
-          Don&apos;t have an account? {" "}
-          <a href="/signup" className="w-full">
-            Sign Up
-          </a>
-        </p>
-      </CardFooter>
-    </Card>
+            <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel className="text-sm font-medium text-gray-700 block mb-1">
+                    Password
+                  </FieldLabel>
+                  <div className="flex">
+                    <Input
+                      {...field}
+                      type={showPassword ? "text" : "password"}
+                      placeholder="********"
+                      aria-invalid={fieldState.invalid}
+                      className="flex-1 text-sm"
+                      required
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-gray-400 hover:text-gray-600 bg-transparent"
+                    >
+                      {showPassword ? <EyeOff /> : <Eye />}
+                    </Button>
+                  </div>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+
+          </form>
+        </CardContent>
+
+        <CardFooter className="flex-col gap-2 pb-6">
+          <Button
+            type="submit"
+            form="signup-form"
+            disabled={loading}
+            className="w-full bg-[#C41230] text-white font-semibold py-3 rounded-lg hover:bg-red-800 transition disabled:opacity-60"
+          >
+            {loading ? "Signing In..." : "Sign In"}
+          </Button>
+
+          <p className="text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <a href={`/signup?${searchParams.toString()}`}>Sign Up</a>
+          </p>
+        </CardFooter>
+
+      </Card>
     </div>
   );
 }
