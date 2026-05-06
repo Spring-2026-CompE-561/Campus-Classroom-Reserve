@@ -45,7 +45,7 @@ type EditDraft = {
 };
 
 function toDatetimeLocal(iso: string) {
-  return new Date(iso).toISOString().slice(0, 16);
+  return iso.slice(0, 16);
 }
 
 export default function HomePage() {

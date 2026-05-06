@@ -5,12 +5,30 @@ import Link from "next/link";
 import SignInCard from "@/components/SignInCard";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+
+function RedirectComponent() {
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const searchParams = useSearchParams();
+
+  // If the user is logged in, redirect them to the home page
+  useEffect(() => {
+    if (mounted && isLoggedIn) {
+      const redirect = searchParams.get("redirect") || "/home";
+      const roomId = searchParams.get("roomId");
+
+      router.replace(roomId ? `${redirect}?roomId=${roomId}` : redirect);
+    }
+  }, [mounted, isLoggedIn, router, searchParams]);
+
+  return <></>;
+}
 
 export default function Home() {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
 
   // Ensures the component is mounted before checking auth
@@ -19,15 +37,7 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // If the user is logged in, redirect them to the home page
-  useEffect(() => {
-    if (mounted && isLoggedIn) {
-      const redirect = searchParams.get("redirect") || "/home";
-      const roomId = searchParams.get("roomId");
-      
-      router.replace(roomId ? `${redirect}?roomId=${roomId}` : redirect);
-    }
-  }, [mounted, isLoggedIn, router, searchParams]);
+
 
   if (!mounted) return <div className="bg-white min-h-screen" />;
   if (isLoggedIn) return <div className="bg-white min-h-screen" />;
@@ -80,6 +90,9 @@ export default function Home() {
 
         {/* Right side: sign-in form */}
         <SignInCard />
+        <Suspense fallback={<></>}>
+          <RedirectComponent />
+        </Suspense>
       </div>
     </main>
   );
