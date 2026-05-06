@@ -4,39 +4,38 @@ import Image from "next/image";
 import Link from "next/link";
 import SignInCard from "@/components/SignInCard";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams(); 
   const [mounted, setMounted] = useState(false);
 
+  // Ensures the component is mounted before checking auth
+  // Helps avoid hydration issues in Next.js
   useEffect(() => {
     setMounted(true);
   }, []);
 
-
+  // If the user is logged in, redirect them to the home page
   useEffect(() => {
     if (mounted && isLoggedIn) {
-      const redirect = searchParams.get("redirect") || "/home";
-      const roomId = searchParams.get("roomId");
-
-      router.replace(roomId ? `${redirect}?roomId=${roomId}` : redirect);
+      router.replace("/home");
     }
-  }, [mounted, isLoggedIn, router, searchParams]);
+  }, [mounted, isLoggedIn, router]);
 
-  if (!mounted) return <div className="bg-white min-h-screen" />;
-  if (isLoggedIn) return <div className="bg-white min-h-screen" />;
-
+  // Don't render anything until mount is complete
+  // Also prevent showing this page if already logged in
+  // if (!mounted) return null;
+  if (isLoggedIn) return null;
   return (
-    <main className="bg-white py-6 px-8">
+    <main className="py-6 px-8">
       <div className="w-full flex gap-6 items-start">
 
         {/* Left side: main image with overlay text */}
         <div
-          className="relative rounded-xl overflow-hidden flex-[3]"
+          className="relative rounded-xl overflow-hidden flex-[3] min-h-580px"
           style={{ height: "580px" }}
         >
           <Image
@@ -48,6 +47,7 @@ export default function Home() {
             priority
           />
 
+          {/* Overlay content on image */}
           <div className="absolute bottom-8 left-8 bg-black/70 rounded-xl p-6 max-w-xs">
             <h2 className="text-white text-3xl font-bold leading-tight">
               Reserve Classrooms.<br />Support Learning.
@@ -59,6 +59,7 @@ export default function Home() {
               Easily find and reserve classrooms across SDSU.
             </p>
 
+            {/* Link to browse available rooms */}
             <Link
               href="/rooms"
               className="mt-4 inline-block bg-[#C41230] text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-red-800 transition"
