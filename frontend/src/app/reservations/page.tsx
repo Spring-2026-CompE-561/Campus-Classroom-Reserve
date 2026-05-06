@@ -258,8 +258,8 @@ export function ReservationsPageComponents() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           room_id: selectedRoom.id,
-          start_time: new Date(startTime).toISOString(),
-          end_time: new Date(endTime).toISOString(),
+          start_time: startTime,
+          end_time: endTime,
           purpose,
         }),
       });
