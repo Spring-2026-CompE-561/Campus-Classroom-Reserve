@@ -151,6 +151,7 @@ export default function ReservationsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const roomIdParam = searchParams.get("roomId");
 
   useEffect(() => {
     if (!token) return;
@@ -179,6 +180,7 @@ export default function ReservationsPage() {
       .catch(() => {});
   }, [token]);
 
+  
   useEffect(() => {
     const roomId = searchParams.get("roomId");
     if (!roomId || rooms.length === 0) return;
@@ -190,12 +192,15 @@ export default function ReservationsPage() {
     }
   }, [searchParams, rooms]);
 
+
   useEffect(() => {
     if (!selectedRoom) return;
     setResLoading(true);
     setRoomReservations(allReservations.filter((r) => r.room_id === selectedRoom.id));
     setResLoading(false);
   }, [selectedRoom, allReservations]);
+
+  if ((roomsLoading || !selectedRoom) && roomIdParam && rooms.length === 0) return <div className="bg-gray-100 min-h-screen" />;
 
   const filteredRooms = rooms.filter((room) => {
     const query = searchQuery.trim().toLowerCase();

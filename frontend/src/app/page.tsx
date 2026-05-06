@@ -25,10 +25,8 @@ export default function Home() {
     }
   }, [mounted, isLoggedIn, router]);
 
-  // Don't render anything until mount is complete
-  // Also prevent showing this page if already logged in
-  if (!mounted) return null;
-  if (isLoggedIn) return null;
+  if (!mounted) return <div className="bg-white min-h-screen" />;
+  if (isLoggedIn) return <div className="bg-white min-h-screen" />;
 
   return (
     <main className="bg-white py-6 px-8">
