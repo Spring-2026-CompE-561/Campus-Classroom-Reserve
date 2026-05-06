@@ -27,8 +27,8 @@ export default function Home() {
     }
   }, [mounted, isLoggedIn, router, searchParams]);
 
-  if (!mounted) return null;
-  if (isLoggedIn) return null;
+  if (!mounted) return <div className="bg-white min-h-screen" />;
+  if (isLoggedIn) return <div className="bg-white min-h-screen" />;
 
   return (
     <main className="bg-white py-6 px-8">

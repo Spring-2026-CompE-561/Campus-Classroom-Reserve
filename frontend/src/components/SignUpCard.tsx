@@ -23,11 +23,12 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 
 const signupSchema = z
 	.object({
@@ -53,6 +54,7 @@ export default function SignUpCard() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -88,7 +90,13 @@ export default function SignUpCard() {
 
       // If successful, redirect user to landing or login page
       if (res.ok) {
-        router.push("/");
+        const redirect = searchParams.get("redirect");
+        const roomId = searchParams.get("roomId");
+        if (redirect && roomId) {
+          router.push(`/?redirect=${redirect}&roomId=${roomId}`);
+        } else {
+          router.push("/");
+        }
       } else {
         // Display backend error message if available
         setError(
@@ -268,7 +276,7 @@ export default function SignUpCard() {
         </Button>
         <p className="text-sm text-muted-foreground">
           Already have an account? {" "}
-          <a href="/" className="w-full">
+          <a href={`/?${searchParams.toString()}`}>
             Sign in!
           </a>
         </p>
