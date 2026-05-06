@@ -4,12 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import SignInCard from "@/components/SignInCard";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
 
   // Ensures the component is mounted before checking auth
@@ -21,16 +22,24 @@ export default function Home() {
   // If the user is logged in, redirect them to the home page
   useEffect(() => {
     if (mounted && isLoggedIn) {
-      router.replace("/home");
+      const redirect = searchParams.get("redirect") || "/home";
+      const roomId = searchParams.get("roomId");
+      
+      router.replace(roomId ? `${redirect}?roomId=${roomId}` : redirect);
     }
-  }, [mounted, isLoggedIn, router]);
+  }, [mounted, isLoggedIn, router, searchParams]);
 
+  if (!mounted) return <div className="bg-white min-h-screen" />;
+  if (isLoggedIn) return <div className="bg-white min-h-screen" />;
+
+  { /*COMMENTED OUT ATM */ }
   // Don't render anything until mount is complete
   // Also prevent showing this page if already logged in
   // if (!mounted) return null;
-  if (isLoggedIn) return null;
+  // if (isLoggedIn) return null;
+
   return (
-    <main className="py-6 px-8">
+    <main className="bg-white py-6 px-8">
       <div className="w-full flex gap-6 items-start">
 
         {/* Left side: main image with overlay text */}

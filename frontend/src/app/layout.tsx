@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -34,7 +34,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn("font-sans", inter.variable)} suppressHydrationWarning>
-      <body className="bg-transparent min-h-screen flex flex-col">
+      {/* <body className="bg-transparent min-h-screen flex flex-col"> */}
+      <body className="bg-gray-100 min-h-screen flex flex-col">
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
