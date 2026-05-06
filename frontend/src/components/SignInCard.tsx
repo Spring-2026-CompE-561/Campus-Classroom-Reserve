@@ -49,6 +49,8 @@ export default function SignInCard() {
   });
 
   const handleLogin = async (data: z.infer<typeof signinSchema>) => {
+    console.log("redirect:", searchParams.get("redirect"));
+    console.log("roomId:", searchParams.get("roomId"));
     setError("");
     setLoading(true);
 
@@ -144,7 +146,7 @@ export default function SignInCard() {
 
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <a href="/signup">Sign Up</a>
+            <a href={`/signup?${searchParams.toString()}`}>Sign Up</a>
           </p>
         </CardFooter>
 
