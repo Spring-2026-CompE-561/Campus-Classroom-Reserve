@@ -1,0 +1,5 @@
+version: "3.9"
+name: campus-classroom-reserve
+include:
+  - frontend/docker-compose.yaml
+  - backend/docker-compose.yaml

@@ -27,16 +27,15 @@ export default function Home() {
 
   // Don't render anything until mount is complete
   // Also prevent showing this page if already logged in
-  if (!mounted) return null;
+  // if (!mounted) return null;
   if (isLoggedIn) return null;
-
   return (
-    <main className="bg-white py-6 px-8">
+    <main className="py-6 px-8">
       <div className="w-full flex gap-6 items-start">
 
         {/* Left side: main image with overlay text */}
         <div
-          className="relative rounded-xl overflow-hidden flex-[3]"
+          className="relative rounded-xl overflow-hidden flex-[3] min-h-580px"
           style={{ height: "580px" }}
         >
           <Image
