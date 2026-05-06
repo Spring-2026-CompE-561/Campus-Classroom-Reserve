@@ -1,5 +1,6 @@
 import Image from "next/image";
 import SignUpCard from "@/components/SignUpCard";
+import { Suspense } from "react";
 
 export default function SignUpPage() {
   return (
@@ -37,7 +38,9 @@ export default function SignUpPage() {
 
         {/* Centered sign-up form */}
         <div className="absolute inset-0 flex items-center justify-center z-10 md:translate-x-24">
-          <SignUpCard />
+          <Suspense fallback={<div>Loading Sign Up card...</div>}>
+            <SignUpCard />
+          </Suspense>
         </div>
       </div>
     </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   CalendarDays,
@@ -123,8 +123,26 @@ function isRoomAvailable(room: Room, allReservations: Reservation[], from: strin
       return fromMs < end && toMs > start;
     });
 }
-
 export default function ReservationsPage() {
+  return (
+    <Suspense fallback={
+    <main className="min-h-screen bg-gray-100">
+        <div className="px-4 py-4">
+          <div
+            className="rounded-2xl overflow-hidden relative flex flex-col py-8"
+            style={{
+              backgroundImage: `url('/centennial-walkway-overlay.jpg')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}></div></div>
+            </main>
+      }>
+      <ReservationsPageComponents/>
+    </Suspense>
+  )
+}
+
+export function ReservationsPageComponents() {
   const { token } = useAuth();
   const searchParams = useSearchParams();
 
