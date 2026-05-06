@@ -36,7 +36,7 @@ export default function SignInCard() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const searchParams = useSearchParams(); // ✅ NEW
+  const searchParams = useSearchParams(); 
 
   const { login } = useAuth();
 
@@ -49,8 +49,6 @@ export default function SignInCard() {
   });
 
   const handleLogin = async (data: z.infer<typeof signinSchema>) => {
-    console.log("redirect:", searchParams.get("redirect"));
-    console.log("roomId:", searchParams.get("roomId"));
     setError("");
     setLoading(true);
 
@@ -79,7 +77,7 @@ export default function SignInCard() {
         </CardHeader>
 
         <CardContent className="px-7 py-6">
-          <form id="signup-form" onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
+          <form id="signin-form" onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
 
             <Controller
               name="email"
@@ -137,7 +135,7 @@ export default function SignInCard() {
         <CardFooter className="flex-col gap-2 pb-6">
           <Button
             type="submit"
-            form="signup-form"
+            form="signin-form"
             disabled={loading}
             className="w-full bg-[#C41230] text-white font-semibold py-3 rounded-lg hover:bg-red-800 transition disabled:opacity-60"
           >
