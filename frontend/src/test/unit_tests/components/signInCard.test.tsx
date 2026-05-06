@@ -52,7 +52,8 @@ describe("SignInCard", () => {
 
     expect(passwordInput).toHaveAttribute("type", "password");
 
-    fireEvent.click(screen.getByRole("button"));
+    const toggleButton = screen.getAllByRole("button")[0];
+    fireEvent.click(toggleButton);
 
     expect(passwordInput).toHaveAttribute("type", "text");
   });

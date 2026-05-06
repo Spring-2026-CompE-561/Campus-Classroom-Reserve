@@ -128,7 +128,9 @@ export default function SignInCard() {
                 </Field>
               )}
             />
-
+            {error && (
+              <p className="text-red-600 text-sm">{error}</p>
+            )}
           </form>
         </CardContent>
 
