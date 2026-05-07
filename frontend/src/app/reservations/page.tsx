@@ -126,7 +126,7 @@ function isRoomAvailable(room: Room, allReservations: Reservation[], from: strin
 export default function ReservationsPage() {
   return (
     <Suspense fallback={
-    <main className="min-h-screen bg-gray-100">
+    <main className="min-h-screen bg-background text-foreground">
         <div className="px-4 py-4">
           <div
             className="rounded-2xl overflow-hidden relative flex flex-col py-8"
@@ -216,7 +216,7 @@ export function ReservationsPageComponents() {
     setResLoading(false);
   }, [selectedRoom, allReservations]);
 
-  if ((roomsLoading || !selectedRoom) && roomIdParam && rooms.length === 0) return <div className="bg-gray-100 min-h-screen" />;
+  if ((roomsLoading || !selectedRoom) && roomIdParam && rooms.length === 0) return <div className="bg-background text-foreground min-h-screen" />;
 
   const filteredRooms = rooms.filter((room) => {
     const query = searchQuery.trim().toLowerCase();
@@ -241,7 +241,7 @@ export function ReservationsPageComponents() {
     }
     const startTime = `${startDate}T${startTimeVal}`;
     const endTime = `${endDate}T${endTimeVal}`;
-    if (new Date(startTime) > new Date(endTime)){
+    if (new Date(startTime) >= new Date(endTime)){
       setSubmitError("Start time must be after end time.");
       return;
     }
@@ -314,7 +314,7 @@ export function ReservationsPageComponents() {
   // ── DETAIL / BOOKING VIEW ──────────────────────────────────────────────────
   if (selectedRoom) {
     return (
-      <main className="min-h-screen bg-gray-100">
+      <main className="bg-background text-foreground min-h-screen">
         <div className="px-4 py-4">
           {/* Rounded campus photo background — same as signup */}
           <div
@@ -330,22 +330,22 @@ export function ReservationsPageComponents() {
                 <Button
                   variant="ghost"
                   onClick={handleBack}
-                  className="mb-6 text-gray-700 bg-white/80 hover:bg-white border border-gray-200 shadow-sm"
+                  className="mb-6 text-card-foreground bg-white/80 hover:bg-white border border-gray-200 shadow-sm"
                 >
                   <ArrowLeft className="w-4 h-4 mr-1.5" />
                   Back to rooms
                 </Button>
 
               {/* Single wide card split into two columns */}
-              <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="max-w-5xl mx-auto bg-card text-card-foreground rounded-2xl shadow-lg overflow-hidden border border-border">
             <div className="grid grid-cols-[320px_1fr] min-h-[600px]">
 
               {/* LEFT — room info */}
-              <div className="border-r border-gray-100 p-5 flex flex-col gap-3">
+              <div className="border-r border-border p-5 flex flex-col gap-3">
                 {/* Title */}
                 <div>
                   <p className="text-[#C41230] text-sm font-semibold mb-0.5">Reserve</p>
-                  <h1 className="text-2xl font-bold text-gray-900">
+                  <h1 className="text-2xl font-bold text-card-foreground">
                     {selectedRoom.building} {selectedRoom.room_num}
                   </h1>
                   {BUILDING_NAMES[selectedRoom.building] && (
@@ -360,7 +360,7 @@ export function ReservationsPageComponents() {
                   <Users className="w-4 h-4 text-[#C41230] mt-0.5" />
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wide font-medium">Capacity</p>
-                    <p className="text-xl font-bold text-gray-900 leading-tight">
+                    <p className="text-xl font-bold text-card-foreground leading-tight">
                       {selectedRoom.capacity} <span className="text-sm font-normal text-gray-400">people</span>
                     </p>
                   </div>
@@ -373,13 +373,13 @@ export function ReservationsPageComponents() {
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <SquareStack className="w-4 h-4 text-[#C41230]" />
-                      <p className="text-sm font-semibold text-gray-700">Features</p>
+                      <p className="text-sm font-semibold text-card-foreground">Features</p>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedRoom.features.map((f) => {
                         const Icon = FEATURE_ICONS[f];
                         return (
-                          <span key={f} className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full border border-gray-200">
+                          <span key={f} className="inline-flex items-center gap-1 text-xs bg-background text-foreground text-gray-600 px-2.5 py-1 rounded-full border border-gray-200">
                             {Icon && <Icon className="w-3 h-3" />}
                             {formatFeature(f)}
                           </span>
@@ -395,7 +395,7 @@ export function ReservationsPageComponents() {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Building2 className="w-4 h-4 text-[#C41230]" />
-                    <p className="text-sm font-semibold text-gray-700">About this room</p>
+                    <p className="text-sm font-semibold text-card-foreground">About this room</p>
                   </div>
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Standard classroom in {BUILDING_NAMES[selectedRoom.building] ?? selectedRoom.building}.
@@ -413,7 +413,7 @@ export function ReservationsPageComponents() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <CalendarDays className="w-4 h-4 text-[#C41230]" />
-                      <h2 className="text-sm font-semibold text-gray-800">Existing Bookings</h2>
+                      <h2 className="text-sm font-semibold text-card-foreground">Existing Bookings</h2>
                     </div>
                   </div>
 
@@ -433,12 +433,12 @@ export function ReservationsPageComponents() {
                           <p className="text-xs font-semibold text-[#C41230] uppercase leading-none">
                             {new Date(res.start_time).toLocaleString("default", { month: "short" })}
                           </p>
-                          <p className="text-xl font-bold text-gray-800 leading-tight">
+                          <p className="text-xl font-bold text-card-foreground leading-tight">
                             {new Date(res.start_time).getDate()}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-800">{res.purpose}</p>
+                          <p className="text-sm font-medium text-card-foreground">{res.purpose}</p>
                           {formatDate(res.start_time) === formatDate(res.end_time) && (
                           <p className="text-xs text-gray-400 mt-0.5">
                             {formatDate(res.start_time)} · {formatTime(res.start_time)} – {formatTime(res.end_time)}
@@ -459,15 +459,15 @@ export function ReservationsPageComponents() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <CalendarDays className="w-4 h-4 text-[#C41230]" />
-                    <h2 className="text-sm font-semibold text-gray-800">Reservation Details</h2>
+                    <h2 className="text-sm font-semibold text-card-foreground">Reservation Details</h2>
                   </div>
 
                   {submitSuccess ? (
                     <div className="text-center py-6">
                       <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-3" />
-                      <p className="font-semibold text-gray-800 mb-1">Reservation Confirmed!</p>
+                      <p className="font-semibold text-card-foreground mb-1">Reservation Confirmed!</p>
                       <p className="text-sm text-gray-500 mb-4">{selectedRoom.building} {selectedRoom.room_num} has been reserved.</p>
-                      <Button variant="outline" onClick={() => setSubmitSuccess(false)} className="border-gray-300 text-gray-700">
+                      <Button variant="outline" onClick={() => setSubmitSuccess(false)} className="border-gray-300 text-card-foreground">
                         Make another reservation
                       </Button>
                     </div>
@@ -536,9 +536,9 @@ export function ReservationsPageComponents() {
 
   // ── ROOM LIST VIEW ─────────────────────────────────────────────────────────
   return (
-    <main className="bg-gray-100 min-h-screen">
+    <main className="bg-background text-foreground min-h-screen">
       <div className="px-6 py-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Make a Reservation</h1>
+        <h1 className="text-2xl font-bold text-card-foreground mb-6">Make a Reservation</h1>
 
         <div className="grid grid-cols-[260px_1fr_300px] gap-6 items-start">
 
@@ -547,7 +547,7 @@ export function ReservationsPageComponents() {
             <Card className="shadow-sm sticky top-6">
               <CardContent className="pt-5 pb-5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-gray-800 text-sm">Filters</span>
+                  <span className="font-semibold text-card-foreground text-sm">Filters</span>
                   {hasActiveFilters && (
                     <button onClick={resetFilters} className="flex items-center gap-1 text-xs text-[#C41230] hover:underline">
                       <RotateCcw className="w-3 h-3" />
@@ -576,7 +576,7 @@ export function ReservationsPageComponents() {
                   <select
                     value={selectedBuilding}
                     onChange={(e) => setSelectedBuilding(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-card-foreground bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
                   >
                     <option value="">All Buildings</option>
                     {buildings.map((b) => (
@@ -634,7 +634,7 @@ export function ReservationsPageComponents() {
                           className="accent-[#C41230] w-3.5 h-3.5"
                         />
                         <Icon className="w-3.5 h-3.5 text-gray-400" />
-                        <span className="text-sm text-gray-700 group-hover:text-gray-900">{label}</span>
+                        <span className="text-sm text-card-foreground group-hover:text-card-foreground">{label}</span>
                       </div>
                       <span className="text-xs text-gray-400">
                         {rooms.filter((r) => r.features?.includes(key)).length}
@@ -648,7 +648,7 @@ export function ReservationsPageComponents() {
                 <div className="flex flex-col gap-1.5">
                   <Button
                     onClick={resetFilters}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-card-foreground bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
                   >
                     Reset Filters
                   </Button>
@@ -683,7 +683,7 @@ export function ReservationsPageComponents() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <h2 className="font-semibold text-gray-900 text-base">
+                        <h2 className="font-semibold text-card-foreground text-base">
                           {room.building} {room.room_num}
                         </h2>
                         {BUILDING_NAMES[room.building] && (
@@ -699,7 +699,7 @@ export function ReservationsPageComponents() {
                           {room.features.map((f) => {
                             const Icon = FEATURE_ICONS[f];
                             return (
-                              <span key={f} className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full border border-gray-200">
+                              <span key={f} className="inline-flex items-center gap-1 text-xs bg-background text-foreground text-gray-600 px-2 py-0.5 rounded-full border border-gray-200">
                                 {Icon && <Icon className="w-3 h-3" />}
                                 {formatFeature(f)}
                               </span>
@@ -726,11 +726,11 @@ export function ReservationsPageComponents() {
           <aside className="flex flex-col gap-4 sticky top-6">
             <Card className="shadow-sm">
               <CardContent className="pt-5 pb-5 flex flex-col gap-1">
-                <p className="font-semibold text-gray-800 text-sm mb-2">Quick Actions</p>
+                <p className="font-semibold text-card-foreground text-sm mb-2">Quick Actions</p>
                 <a href="/" className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-gray-50 transition group">
                   <div className="flex items-center gap-2.5">
                     <CalendarDays className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-700">My Reservations</span>
+                    <span className="text-sm text-card-foreground">My Reservations</span>
                   </div>
                   <span className="text-gray-300 group-hover:text-gray-500 text-base">&#8250;</span>
                 </a>
@@ -749,7 +749,7 @@ export function ReservationsPageComponents() {
               <CardContent className="pt-5 pb-5">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-[#C41230] text-base">💡</span>
-                  <p className="font-semibold text-gray-800 text-sm">Tips</p>
+                  <p className="font-semibold text-card-foreground text-sm">Tips</p>
                 </div>
                 <p className="text-xs text-gray-500 mb-2">Use filters to quickly find a room that fits your needs.</p>
                 <p className="text-xs text-gray-500">You can filter by date, capacity, building, or required features.</p>
