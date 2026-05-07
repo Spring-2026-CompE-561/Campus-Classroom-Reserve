@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", inter.variable)} suppressHydrationWarning>
       {/* <body className="bg-transparent min-h-screen flex flex-col"> */}
-      <body className="bg-gray-100 min-h-screen flex flex-col">
+      <body className="bg-background text-foreground min-h-screen flex flex-col">
         <ThemeProvider
             attribute="class"
             defaultTheme="system"

@@ -53,7 +53,7 @@ export default function Navbar() {
           </Link>
 
           <div className="flex-1 text-center">
-            <h1 className="text-white text-2xl font-semibold tracking-wide">
+            <h1 className="bg-linear-to-r from-red-300 via-red-500 to-red-700 text-3xl bg-clip-text font-extrabold leading-tight tracking-tight text-transparent border-white">
               SDSU Campus Classroom Reserve
             </h1>
           </div>

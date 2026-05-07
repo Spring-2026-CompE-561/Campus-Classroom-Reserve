@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function SignUpPage() {
   return (
-    <main className="bg-gray-100 pt-6 px-8 pb-6">
+    <main className="bg-background pt-6 px-8 pb-6">
       {/* Background image container */}
       <div
         className="relative rounded-xl overflow-hidden w-full"

@@ -168,11 +168,11 @@ export default function RoomsPage() {
   }
 
   return (
-    <main className="bg-gray-100 min-h-screen">
+    <main className="bg-background min-h-screen">
       <div className="px-6 py-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Browse Rooms</h1>
+        <h1 className="text-2xl font-bold text-card-foreground mb-2">Browse Rooms</h1>
 
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-muted-foreground mb-6">
           Browse classrooms across campus. Sign in to reserve a room.
         </p>
 
@@ -181,7 +181,7 @@ export default function RoomsPage() {
             <Card className="shadow-sm sticky top-6">
               <CardContent className="pt-5 pb-5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-gray-800 text-sm">
+                  <span className="font-semibold text-foreground text-sm">
                     Filters
                   </span>
 
@@ -197,11 +197,11 @@ export default function RoomsPage() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <Label className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                  <Label className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                     Search
                   </Label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                     <Input
                       placeholder="Room, building, features..."
                       value={searchQuery}
@@ -214,13 +214,13 @@ export default function RoomsPage() {
                 <Separator />
 
                 <div className="flex flex-col gap-1.5">
-                  <Label className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                  <Label className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                     Building
                   </Label>
                   <select
                     value={selectedBuilding}
                     onChange={(e) => setSelectedBuilding(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-card-foreground bg-card focus:outline-none focus:ring-2 focus:ring-[#C41230]"
                   >
                     <option value="">All Buildings</option>
                     {buildings.map((b) => (
@@ -232,11 +232,11 @@ export default function RoomsPage() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <Label className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                  <Label className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                     Min Capacity
                   </Label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                     <Input
                       type="number"
                       min={1}
@@ -251,7 +251,7 @@ export default function RoomsPage() {
                 <Separator />
 
                 <div className="flex flex-col gap-2">
-                  <Label className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                  <Label className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                     Features
                   </Label>
 
@@ -273,12 +273,12 @@ export default function RoomsPage() {
                           }}
                           className="accent-[#C41230] w-3.5 h-3.5"
                         />
-                        <Icon className="w-3.5 h-3.5 text-gray-400" />
-                        <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                        <Icon className="w-3.5 h-3.5 text-muted-foreground" />
+                        <span className="text-sm text-card-foreground group-hover:text-card-foreground">
                           {label}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-muted-foreground">
                         {rooms.filter((r) => r.features?.includes(key)).length}
                       </span>
                     </label>
@@ -290,7 +290,7 @@ export default function RoomsPage() {
 
           <section className="flex flex-col gap-3">
             <div className="px-1">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {roomsLoading
                   ? "Loading rooms..."
                   : `${filteredRooms.length} room${
@@ -301,7 +301,7 @@ export default function RoomsPage() {
 
             {!roomsLoading && filteredRooms.length === 0 && (
               <Card className="shadow-sm">
-                <CardContent className="py-10 text-center text-sm text-gray-400">
+                <CardContent className="py-10 text-center text-sm text-muted-foreground">
                   No rooms match your filters.
                 </CardContent>
               </Card>
@@ -316,18 +316,18 @@ export default function RoomsPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <h2 className="font-semibold text-gray-900 text-base">
+                        <h2 className="font-semibold text-card-foreground text-base">
                           {room.building} {room.room_num}
                         </h2>
 
                         {BUILDING_NAMES[room.building] && (
-                          <span className="text-sm text-gray-400">
+                          <span className="text-sm text-muted-foreground">
                             {BUILDING_NAMES[room.building]}
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-2">
+                      <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
                         <Users className="w-3.5 h-3.5 text-[#C41230]" />
                         Capacity: {room.capacity}
                       </div>

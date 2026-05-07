@@ -39,8 +39,8 @@ export default function Home() {
 
 
 
-  if (!mounted) return <div className="bg-white min-h-screen" />;
-  if (isLoggedIn) return <div className="bg-white min-h-screen" />;
+  if (!mounted) return <div className="bg-background min-h-screen" />;
+  if (isLoggedIn) return <div className="bg-background min-h-screen" />;
 
   { /*COMMENTED OUT ATM */ }
   // Don't render anything until mount is complete
@@ -49,7 +49,7 @@ export default function Home() {
   // if (isLoggedIn) return null;
 
   return (
-    <main className="bg-white py-6 px-8">
+    <main className="bg-background text-foreground min-h-screen py-6 px-8">
       <div className="w-full flex gap-6 items-start">
 
         {/* Left side: main image with overlay text */}

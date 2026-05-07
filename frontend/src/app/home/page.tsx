@@ -112,7 +112,20 @@ export default function HomePage() {
 
   async function handleSave(id: number) {
     if (!editDraft) return;
+
+    //make sure start time is before end time
+    const start = new Date(editDraft.start_time);
+    const end = new Date(editDraft.end_time);
+
+    if (start >= end) {
+      setError("Start time must be before end time");
+      return;
+    }
+
+    /* TODO: check if room reservation is available -- pull room of reservation, and obtain all the reservations */
+
     setSaving(true);
+
     const params = new URLSearchParams({
       purpose: editDraft.purpose,
       start_time: editDraft.start_time,
@@ -135,13 +148,13 @@ export default function HomePage() {
   const recentReservations = reservations.slice(0, 3);
 
   return (
-    <main className="bg-gray-100 min-h-screen pt-6 px-8 pb-10">
+    <main className="bg-transparent text-foreground min-h-screen pt-6 px-8 pb-10">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
 
         {/* Main section */}
         <section>
           <div className="flex items-center justify-between mb-5">
-            <h1 className="text-2xl font-bold text-gray-800">My Reservations</h1>
+            <h1 className="text-2xl font-bold text-foreground">My Reservations</h1>
             <Button asChild className="bg-[#C41230] hover:bg-[#a80f29] text-white gap-2">
               <Link href="/reservations">
                 <Plus className="w-4 h-4" />
@@ -151,7 +164,7 @@ export default function HomePage() {
           </div>
 
           {loading && (
-            <p className="text-gray-500 text-sm">Loading reservations...</p>
+            <p className="text-muted-foreground text-sm">Loading reservations...</p>
           )}
 
           {error && (
@@ -162,7 +175,7 @@ export default function HomePage() {
 
           {!loading && !error && reservations.length === 0 && (
             <Card>
-              <CardContent className="pt-6 text-center text-gray-500 text-sm">
+              <CardContent className="pt-6 text-center text-muted-foreground text-sm">
                 You have no reservations yet.{" "}
                 <Link href="/reservations" className="text-[#C41230] hover:underline font-medium">
                   Create one now.
@@ -179,32 +192,32 @@ export default function HomePage() {
                   <CardContent className="px-6 py-5 flex flex-col gap-4">
                     <div className="flex items-center gap-2">
                       <Building2 className="w-4 h-4 text-[#C41230]" />
-                      <span className="text-base font-semibold text-gray-800">Room {res.room_id}</span>
+                      <span className="text-base font-semibold text-card-foreground">Room {res.room_id}</span>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs text-gray-500 font-medium">Purpose</label>
+                      <label className="text-xs text-muted-foreground font-medium">Purpose</label>
                       <input
-                        className="border rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-[#C41230]"
+                        // className="border rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-[#C41230]"
+                        className="border border-input bg-transparent text-foreground rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-primary"
                         value={editDraft.purpose}
                         onChange={(e) => setEditDraft({ ...editDraft, purpose: e.target.value })}
                       />
                     </div>
                     <div className="flex gap-4">
                       <div className="flex flex-col gap-1 flex-1">
-                        <label className="text-xs text-gray-500 font-medium">Start</label>
+                        <label className="text-xs text-muted-foreground font-medium">Start</label>
                         <input
                           type="datetime-local"
-                          className="border rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-[#C41230]"
+                          className="border border-input bg-transparent text-foreground rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-primary"
                           value={editDraft.start_time}
                           onChange={(e) => setEditDraft({ ...editDraft, start_time: e.target.value })}
                         />
                       </div>
                       <div className="flex flex-col gap-1 flex-1">
-                        <label className="text-xs text-gray-500 font-medium">End</label>
+                        <label className="text-xs text-muted-foreground font-medium">End</label>
                         <input
                           type="datetime-local"
-                          className="border rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-[#C41230]"
-                          value={editDraft.end_time}
+                          className="border border-input bg-transparent text-foreground rounded px-3 py-1.5 text-sm w-full focus:outline-none focus:ring-1 focus:ring-primary"
                           onChange={(e) => setEditDraft({ ...editDraft, end_time: e.target.value })}
                         />
                       </div>
@@ -234,18 +247,18 @@ export default function HomePage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Building2 className="w-4 h-4 text-[#C41230]" />
-                        <h2 className="text-base font-semibold text-gray-800">Room {res.room_id}</h2>
+                        <h2 className="text-base font-semibold text-foreground">Room {res.room_id}</h2>
                       </div>
-                      <p className="text-sm text-gray-500">{res.purpose}</p>
+                      <p className="text-sm text-muted-foreground">{res.purpose}</p>
                     </div>
 
                     {/* Date + time */}
                     <div className="flex flex-col gap-1 w-64 items-center">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <CalendarDays className="w-4 h-4 text-[#C41230]" />
                         {formatDate(res.start_time)}
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="w-4 h-4 text-[#C41230]" />
                         {formatTime(res.start_time)} – {formatTime(res.end_time)}
                       </div>
@@ -305,16 +318,16 @@ export default function HomePage() {
             <Separator />
             <CardContent className="pt-4 space-y-4 text-sm">
               <div>
-                <p className="text-gray-500">Name</p>
-                <p className="font-medium text-gray-800">{user?.name ?? "—"}</p>
+                <p className="text-muted-foreground">Name</p>
+                <p className="font-medium text-foreground">{user?.name ?? "—"}</p>
               </div>
               <div>
-                <p className="text-gray-500">Email</p>
-                <p className="font-medium text-gray-800">{user?.email ?? "—"}</p>
+                <p className="text-muted-foreground">Email</p>
+                <p className="font-medium text-foreground">{user?.email ?? "—"}</p>
               </div>
               <div>
-                <p className="text-gray-500">Total Reservations</p>
-                <p className="font-medium text-gray-800">{reservations.length}</p>
+                <p className="text-muted-foreground">Total Reservations</p>
+                <p className="font-medium text-foreground">{reservations.length}</p>
               </div>
               <Separator />
               <Button asChild variant="outline" className="w-full text-[#C41230] border-[#C41230] hover:bg-red-50">
