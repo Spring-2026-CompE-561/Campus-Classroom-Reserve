@@ -1,38 +1,20 @@
 """Room service."""
 
+from datetime import datetime
+from math import ceil
+
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 from app.repository.room import RoomRepository
-from app.schemas.room import RoomCreate, RoomResponse, RoomUpdate
+from app.schemas.room import PaginatedRoomResponse, RoomCreate, RoomResponse, RoomUpdate
 
 
 ROOM_NOT_FOUND_MSG = "Room not found."
 
 
-def get_rooms(db: Session) -> list[RoomResponse]:
-    """Get all rooms."""
-    rooms = RoomRepository.get_all(db)
-    return [
-        RoomResponse(
-            id=room.id,
-            building=room.building,
-            room_num=room.room_num,
-            capacity=room.capacity,
-            features=room.features,
-        )
-        for room in rooms # type: ignore
-    ]
-
-
-def get_room_by_id(db: Session, room_id: int) -> RoomResponse:
-    """Get a specific room by ID."""
-    room = RoomRepository.get_by_id(db, room_id)
-    if room is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
-        )
+def _to_response(room) -> RoomResponse:  # type: ignore[no-untyped-def]
     return RoomResponse(
         id=room.id,
         building=room.building,
@@ -42,9 +24,62 @@ def get_room_by_id(db: Session, room_id: int) -> RoomResponse:
     )
 
 
+def get_buildings(db: Session) -> list[str]:
+    """Get all distinct building codes."""
+    return RoomRepository.get_distinct_buildings(db)
+
+
+def get_rooms_paginated(
+    db: Session,
+    page: int = 1,
+    page_size: int = 25,
+    building: str | None = None,
+    search: str | None = None,
+    min_capacity: int | None = None,
+    features: list[str] | None = None,
+    avail_from: datetime | None = None,
+    avail_to: datetime | None = None,
+) -> PaginatedRoomResponse:
+    """Get rooms with server-side filtering and pagination."""
+    rooms, total = RoomRepository.get_filtered_paginated(
+        db,
+        page=page,
+        page_size=page_size,
+        building=building,
+        search=search,
+        min_capacity=min_capacity,
+        features=features or [],
+        avail_from=avail_from,
+        avail_to=avail_to,
+    )
+    total_pages = max(1, ceil(total / page_size))
+    return PaginatedRoomResponse(
+        rooms=[_to_response(r) for r in rooms],
+        total=total,
+        page=page,
+        page_size=page_size,
+        total_pages=total_pages,
+    )
+
+
+def get_rooms(db: Session) -> list[RoomResponse]:
+    """Get all rooms (kept for internal use and existing tests)."""
+    rooms = RoomRepository.get_all(db)
+    return [_to_response(room) for room in rooms]  # type: ignore[union-attr]
+
+
+def get_room_by_id(db: Session, room_id: int) -> RoomResponse:
+    """Get a specific room by ID."""
+    room = RoomRepository.get_by_id(db, room_id)
+    if room is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
+        )
+    return _to_response(room)
+
+
 def create_room(db: Session, room_data: RoomCreate) -> RoomResponse:
     """Create a new room."""
-    # Check if there is a room in the same building with the same number
     building = RoomRepository.get_by_building(db, room_data.building)
     if building is not None:
         for room in building:
@@ -62,13 +97,7 @@ def create_room(db: Session, room_data: RoomCreate) -> RoomResponse:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="A room with that building and room number already exists.",
         )
-    return RoomResponse(
-        id=room.id,
-        building=room.building,
-        room_num=room.room_num,
-        capacity=room.capacity,
-        features=room.features,
-    )
+    return _to_response(room)
 
 
 def update_room(db: Session, room_id: int, room_data: RoomUpdate) -> RoomResponse:
@@ -78,13 +107,7 @@ def update_room(db: Session, room_id: int, room_data: RoomUpdate) -> RoomRespons
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
         )
-    return RoomResponse(
-        id=room.id,
-        building=room.building,
-        room_num=room.room_num,
-        capacity=room.capacity,
-        features=room.features,
-    )
+    return _to_response(room)
 
 
 def delete_room(db: Session, room_id: int) -> RoomResponse:
@@ -95,19 +118,4 @@ def delete_room(db: Session, room_id: int) -> RoomResponse:
             status_code=status.HTTP_404_NOT_FOUND, detail=ROOM_NOT_FOUND_MSG
         )
     deleted = RoomRepository.delete(db, room)
-    if deleted is not None:
-        return RoomResponse(
-            id=deleted.id,
-            building=deleted.building,
-            room_num=deleted.room_num,
-            capacity=deleted.capacity,
-            features=deleted.features,
-        )
-    else:
-        return RoomResponse(
-            id=room.id,
-            building=room.building,
-            room_num=room.room_num,
-            capacity=room.capacity,
-            features=room.features,
-        )
+    return _to_response(deleted if deleted is not None else room)
