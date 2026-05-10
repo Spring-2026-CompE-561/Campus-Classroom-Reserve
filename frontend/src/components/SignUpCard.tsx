@@ -23,11 +23,12 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 
 const signupSchema = z
 	.object({
@@ -53,6 +54,7 @@ export default function SignUpCard() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -88,7 +90,13 @@ export default function SignUpCard() {
 
       // If successful, redirect user to landing or login page
       if (res.ok) {
-        router.push("/");
+        const redirect = searchParams.get("redirect");
+        const roomId = searchParams.get("roomId");
+        if (redirect && roomId) {
+          router.push(`/?redirect=${redirect}&roomId=${roomId}`);
+        } else {
+          router.push("/");
+        }
       } else {
         // Display backend error message if available
         setError(
@@ -119,7 +127,7 @@ export default function SignUpCard() {
             name="firstName"
             control={form.control}
             render={({ field, fieldState}) => (
-              <Field className="" data-invalid={fieldState.invalid}>
+              <Field className="mt-2 mr-1" data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-first-name">First Name</FieldLabel>
                 <Input
                 {... field}
@@ -137,7 +145,7 @@ export default function SignUpCard() {
             name="lastName"
             control={form.control}
             render={({ field, fieldState}) => (
-              <Field className="" data-invalid={fieldState.invalid}>
+              <Field className="mt-2 ml-1" data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-last-name">Last Name</FieldLabel>
                 <Input
                 {... field}
@@ -155,7 +163,7 @@ export default function SignUpCard() {
             name="role"
             control={form.control}
             render={() => (
-            <Field className="md:col-span-2">
+            <Field className="md:col-span-2 mt-2">
               <FieldLabel htmlFor="form-role">Role</FieldLabel>
               <Select defaultValue="Student">
                 <SelectTrigger id="form-role">
@@ -173,7 +181,7 @@ export default function SignUpCard() {
             name="email"
             control={form.control}
             render={({ field, fieldState}) => (
-              <Field className='md:col-span-2' data-invalid={fieldState.invalid}>
+              <Field className='md:col-span-2 mt-2' data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-email">Email</FieldLabel>
                 <Input
                 {... field}
@@ -191,7 +199,7 @@ export default function SignUpCard() {
             name="password"
             control={form.control}
             render={({field, fieldState}) => (
-              <Field className='md:col-span-2' data-invalid={fieldState.invalid}>
+              <Field className='md:col-span-2 mt-2' data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-signup-password">Password</FieldLabel>
                 <div className="flex">
                   <Input
@@ -222,7 +230,7 @@ export default function SignUpCard() {
             name="passwordConfirm"
             control={form.control}
             render={({field, fieldState}) => (
-              <Field className='md:col-span-2' data-invalid={fieldState.invalid}>
+              <Field className='md:col-span-2 mt-2' data-invalid={fieldState.invalid}>
                 <FieldLabel className="flex" htmlFor="form-signup-confirm-password">Confirm Password</FieldLabel>
                 <div className="flex">
                   <Input
@@ -249,7 +257,13 @@ export default function SignUpCard() {
               </Field>
             )
           }/>
+          {error && (
+            <Card className="md:col-span-2 border-red-200 py-2 mt-2 bg-red-50">
+              <CardContent className="text-red-600 text-sm">{error}</CardContent>
+            </Card>
+          )}
         </form>
+
       </CardContent>
       <CardFooter className="flex-col gap-2">
         <Button
@@ -262,7 +276,7 @@ export default function SignUpCard() {
         </Button>
         <p className="text-sm text-muted-foreground">
           Already have an account? {" "}
-          <a href="/" className="w-full">
+          <a href={`/?${searchParams.toString()}`}>
             Sign in!
           </a>
         </p>

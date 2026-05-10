@@ -4,8 +4,27 @@ import Image from "next/image";
 import Link from "next/link";
 import SignInCard from "@/components/SignInCard";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+
+function RedirectComponent() {
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const searchParams = useSearchParams();
+
+  // If the user is logged in, redirect them to the home page
+  useEffect(() => {
+    if (mounted && isLoggedIn) {
+      const redirect = searchParams.get("redirect") || "/home";
+      const roomId = searchParams.get("roomId");
+
+      router.replace(roomId ? `${redirect}?roomId=${roomId}` : redirect);
+    }
+  }, [mounted, isLoggedIn, router, searchParams]);
+
+  return <></>;
+}
 
 export default function Home() {
   const { isLoggedIn } = useAuth();
@@ -18,25 +37,24 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // If the user is logged in, redirect them to the home page
-  useEffect(() => {
-    if (mounted && isLoggedIn) {
-      router.replace("/home");
-    }
-  }, [mounted, isLoggedIn, router]);
 
+
+  if (!mounted) return <div className="bg-background min-h-screen" />;
+  if (isLoggedIn) return <div className="bg-background min-h-screen" />;
+
+  { /*COMMENTED OUT ATM */ }
   // Don't render anything until mount is complete
   // Also prevent showing this page if already logged in
-  if (!mounted) return null;
-  if (isLoggedIn) return null;
+  // if (!mounted) return null;
+  // if (isLoggedIn) return null;
 
   return (
-    <main className="bg-white py-6 px-8">
+    <main className="bg-background text-foreground min-h-screen py-6 px-8">
       <div className="w-full flex gap-6 items-start">
 
         {/* Left side: main image with overlay text */}
         <div
-          className="relative rounded-xl overflow-hidden flex-[3]"
+          className="relative rounded-xl overflow-hidden flex-[3] min-h-580px"
           style={{ height: "580px" }}
         >
           <Image
@@ -72,6 +90,9 @@ export default function Home() {
 
         {/* Right side: sign-in form */}
         <SignInCard />
+        <Suspense fallback={<></>}>
+          <RedirectComponent />
+        </Suspense>
       </div>
     </main>
   );

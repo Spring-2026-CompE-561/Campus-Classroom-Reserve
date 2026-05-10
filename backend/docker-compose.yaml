@@ -13,6 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./seed_rooms.sql:/docker-entrypoint-initdb.d/seed_rooms.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ccr_user} -d ${POSTGRES_DB:-campus_classroom_reserve}"]
       interval: 10s

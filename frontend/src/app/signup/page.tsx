@@ -1,9 +1,10 @@
 import Image from "next/image";
 import SignUpCard from "@/components/SignUpCard";
+import { Suspense } from "react";
 
 export default function SignUpPage() {
   return (
-    <main className="bg-gray-100 pt-6 px-8 pb-6">
+    <main className="bg-background pt-6 px-8 pb-6">
       {/* Background image container */}
       <div
         className="relative rounded-xl overflow-hidden w-full"
@@ -37,7 +38,9 @@ export default function SignUpPage() {
 
         {/* Centered sign-up form */}
         <div className="absolute inset-0 flex items-center justify-center z-10 md:translate-x-24">
-          <SignUpCard />
+          <Suspense fallback={<div>Loading Sign Up card...</div>}>
+            <SignUpCard />
+          </Suspense>
         </div>
       </div>
     </main>

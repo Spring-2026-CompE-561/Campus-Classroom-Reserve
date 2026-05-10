@@ -1,0 +1,10 @@
+name: campus-classroom-reserve
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ccr-frontend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
