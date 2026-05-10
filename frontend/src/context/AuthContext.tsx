@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     formData.append("password", password);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/user/login", {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString(),

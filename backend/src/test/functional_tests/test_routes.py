@@ -163,7 +163,7 @@ class TestRoutes:
     def test_get_rooms_unauthenticated(self):
         """Unauthenticated users cannot get rooms."""
         response = client.get("/api/v1/rooms/")
-        assert response.status_code == 200
+        assert response.status_code == 401
 
     def test_get_rooms_as_student(self):
         """Students can get all rooms."""

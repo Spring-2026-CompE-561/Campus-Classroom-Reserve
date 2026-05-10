@@ -13,7 +13,6 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
-    "types": ["vitest/globals"],
     "paths": {
       "@/*": [
         "./src/*"
@@ -27,7 +26,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2017"
+    "target": "ES2017",
+    "types": [
+      "vitest/globals"
+    ]
   },
   "exclude": [
     "node_modules"
