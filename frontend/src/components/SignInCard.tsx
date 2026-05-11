@@ -71,7 +71,7 @@ export default function SignInCard() {
   return (
     <div className="w-[360px] bg-white rounded-xl overflow-hidden shadow-lg flex-shrink-0" style={{ overflowY: "auto" }}>
       <Card className="w-full max-w-sm h-full flex flex-col justify-between">
-        
+
         <CardHeader className="bg-[#1a1a1a] px-7 py-6">
           <CardTitle className="text-white text-2xl font-bold">Sign In</CardTitle>
           <div className="w-8 h-1 bg-[#C41230] mt-2 rounded" />
@@ -155,7 +155,7 @@ export default function SignInCard() {
             <a href={`/signup?${searchParams.toString()}`}>Sign Up</a>
           </p>
         </CardFooter>
-      
+
       </Card>
     </div>
   );

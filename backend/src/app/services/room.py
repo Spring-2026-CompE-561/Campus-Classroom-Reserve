@@ -41,7 +41,7 @@ def get_rooms_paginated(
     avail_to: datetime | None = None,
 ) -> PaginatedRoomResponse:
     """Get rooms with server-side filtering and pagination."""
-    rooms, total = RoomRepository.get_filtered_paginated(
+    rooms, total, feature_counts = RoomRepository.get_filtered_paginated(
         db,
         page=page,
         page_size=page_size,
@@ -59,6 +59,7 @@ def get_rooms_paginated(
         page=page,
         page_size=page_size,
         total_pages=total_pages,
+        feature_counts=feature_counts,
     )
 
 
