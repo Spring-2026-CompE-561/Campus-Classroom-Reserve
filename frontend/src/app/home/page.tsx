@@ -116,6 +116,17 @@ export default function HomePage() {
     //make sure start time is before end time
     const start = new Date(editDraft.start_time);
     const end = new Date(editDraft.end_time);
+    const now = new Date();
+
+    if (start < now) {
+      setError("Start time cannot be in the past.");
+      return;
+    }
+
+    if (end < now) {
+      setError("End time cannot be in the past.");
+      return;
+    }
 
     if (start >= end) {
       setError("Start time must be before end time");
