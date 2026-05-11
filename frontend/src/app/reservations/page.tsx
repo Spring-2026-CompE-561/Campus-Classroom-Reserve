@@ -287,8 +287,23 @@ export function ReservationsPageComponents() {
     }
     const startTime = `${startDate}T${startTimeVal}`;
     const endTime = `${endDate}T${endTimeVal}`;
-    if (new Date(startTime) >= new Date(endTime)) {
-      setSubmitError("Start time must be after end time.");
+
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const now = new Date();
+
+    if (start < now) {
+      setSubmitError("Start time cannot be in the past.");
+      return;
+    }
+
+    if (end < now) {
+      setSubmitError("End time cannot be in the past.");
+      return;
+    }
+
+    if (start >= end) {
+      setSubmitError("Start time must be before end time.");
       return;
     }
     if (!isRoomAvailable(selectedRoom, allReservations, startTime, endTime)) {
