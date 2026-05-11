@@ -401,7 +401,7 @@ export function ReservationsPageComponents() {
                 <Button
                   variant="ghost"
                   onClick={handleBack}
-                  className="mb-6 text-card-foreground bg-white/80 hover:bg-white border border-gray-200 shadow-sm"
+                  className="mb-6 text-card-foreground bg-background/80 hover:bg-accent border border-gray-200 shadow-sm"
                 >
                   <ArrowLeft className="w-4 h-4 mr-1.5" />
                   Back to rooms
@@ -697,7 +697,7 @@ export function ReservationsPageComponents() {
                 <Separator />
 
                 <div className="flex flex-col gap-1.5">
-                  <Label className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                  <Label className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                     Building
                   </Label>
                   <select
@@ -706,9 +706,9 @@ export function ReservationsPageComponents() {
                       setSelectedBuilding(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-card-foreground bg-white focus:outline-none focus:ring-2 focus:ring-[#C41230]"
+                    className="w-full border border-border rounded-md px-3 py-2 text-sm text-card-foreground bg-card focus:outline-none focus:ring-2 focus:ring-[#C41230]"
                   >
-                    <option value="">All Buildings</option>
+                    <option value="" className="text-card-foreground bg-card">All Buildings</option>
                     {buildings.map((b) => (
                       <option key={b} value={b}>
                         {getBuildingLabel(b)}
@@ -941,28 +941,28 @@ export function ReservationsPageComponents() {
                 <p className="font-semibold text-card-foreground text-sm mb-2">Quick Actions</p>
                 <Link
                   href="/home"
-                  className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-gray-50 transition group"
+                  className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-accent transition group"
                 >
                   <div className="flex items-center gap-2.5">
                     <CalendarDays className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-card-foreground">My Reservations</span>
                   </div>
-                  <span className="text-gray-300 group-hover:text-gray-500 text-base">&#8250;</span>
+                  <span className="text-muted-foreground group-hover:text-foreground text-base">&#8250;</span>
                 </Link>
                 <Separator />
               </CardContent>
             </Card>
 
-            <Card className="shadow-sm bg-red-50 border-red-100">
+            <Card className="shadow-sm bg-destructive/10 border-destructive/30">
               <CardContent className="pt-5 pb-5">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-[#C41230] text-base">💡</span>
                   <p className="font-semibold text-card-foreground text-sm">Tips</p>
                 </div>
-                <p className="text-xs text-gray-500 mb-2">
+                <p className="text-xs text-muted-foreground mb-2">
                   Use filters to quickly find a room that fits your needs.
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   You can filter by date, capacity, building, or required features.
                 </p>
               </CardContent>
