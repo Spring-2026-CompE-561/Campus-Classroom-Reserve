@@ -126,7 +126,8 @@ export default function RoomsPage() {
     if (isLoggedIn) return;
 
     setRoomsLoading(true);
-    
+    setRooms([]);
+    setFeatureCounts({});
 
     const params = new URLSearchParams();
     params.set("page", String(currentPage));
@@ -306,7 +307,7 @@ export default function RoomsPage() {
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        {roomsLoading ? "..." : featureCounts[key] ?? 0}
+                        {roomsLoading ? "..." : requiredFeatures.includes(key) ? totalRooms : featureCounts[key] ?? 0}
                       </span>
                     </label>
                   ))}
