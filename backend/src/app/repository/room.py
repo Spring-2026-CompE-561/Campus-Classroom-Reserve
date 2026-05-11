@@ -67,7 +67,7 @@ class RoomRepository:
             for feature in features:
                 # Match exact feature key inside the JSON array string
                 query = query.filter(cast(Room.features, String).ilike(f"%{feature}%"))
-               
+
         if avail_from and avail_to:
             # Strip tz info so comparison works against naive DB datetimes
             from_dt = avail_from.replace(tzinfo=None)

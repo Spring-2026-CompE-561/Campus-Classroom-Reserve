@@ -2,7 +2,7 @@ export default function AboutPage() {
 	return (
 		<main>
 			<style>
-			{`	
+			{`
 				/* skipped h1, since h1 alters the navbar header title */
 				h2 {
 					font-size: 36px; /* was 48px */
@@ -39,7 +39,7 @@ export default function AboutPage() {
 				}
 			`}
 			</style>
-			
+
 			<h2>About Campus Classroom Reserve</h2>
 			<div className = "page-width">
 				<p>
@@ -56,7 +56,7 @@ export default function AboutPage() {
 
 			<div className = "page-width">
 				<h3>Why this exists</h3>
-				
+
 				<p>
 					Students frequently need spaces for:
 				</p>
@@ -80,7 +80,7 @@ export default function AboutPage() {
 
 			<div className = "page-width">
 				<h3>What you can do</h3>
-				
+
 				<p>
 					With Campus Classroom Reserve, you can:
 				</p>
