@@ -501,7 +501,7 @@ export function ReservationsPageComponents() {
                         {resLoading && <p className="text-sm text-gray-400">Loading...</p>}
 
                         {!resLoading && roomReservations.length === 0 && (
-                          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 bg-gray-50 border border-gray-100 rounded-lg px-4 py-3">
+                          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground bg-muted border border-gray-100 rounded-lg px-4 py-3">
                             <CalendarDays className="w-4 h-4" />
                             No existing bookings for this room.
                           </div>

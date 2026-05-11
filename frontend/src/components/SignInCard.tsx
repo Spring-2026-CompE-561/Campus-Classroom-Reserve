@@ -146,7 +146,7 @@ export default function SignInCard() {
             disabled={loading}
             className="w-full bg-[#C41230] text-white font-semibold py-3 rounded-lg hover:bg-red-800 transition disabled:opacity-60"
           >
-            {loading ? "Sigining In..." : "Sign In"}
+            {loading ? "Signing In..." : "Sign In"}
           </Button>
 
           <p className="text-sm text-muted-foreground">
