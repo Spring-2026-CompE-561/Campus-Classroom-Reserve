@@ -30,7 +30,6 @@ export default function AboutPage() {
 					<div>
 						<p className="text-foreground mb-4">
 							Students frequently need spaces for:
-							However, finding and reserving available classrooms can be difficult, requiring manual requests or unclear procedures.
 						</p>
 						<ul className="list-disc marker:text-[#C41230] ml-6 mb-4">
 							<li>Group study sessions</li>
