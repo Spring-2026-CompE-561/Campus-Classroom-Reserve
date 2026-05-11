@@ -2,8 +2,9 @@
 
 from sqlalchemy.orm import Session
 
-from app.models.user import User
+from app.models.user import User, UserType
 from app.schemas.user import UserCreate, UserUpdate
+
 
 
 class UserRepository:
@@ -61,7 +62,7 @@ class UserRepository:
             name=user.name,
             email=user.email,
             hashed_password=hashed_password,
-            user_type=user.user_type,
+            user_type=UserType.student,
             disabled=user.disabled,
         )
         try:

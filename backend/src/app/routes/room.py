@@ -17,7 +17,7 @@ api_router = APIRouter(prefix="/rooms", tags=["rooms"])
 @api_router.get("/buildings", response_model=list[str])
 async def get_buildings(
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
+    #current_user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
 ) -> list[str]:
     """Get all distinct building codes. Accessible by any authenticated user."""
     return room_service.get_buildings(db)
@@ -26,7 +26,7 @@ async def get_buildings(
 @api_router.get("/", response_model=PaginatedRoomResponse)
 async def read_rooms(
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
+    #current_user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=25, ge=1, le=100),
     building: str | None = Query(default=None),
@@ -54,7 +54,7 @@ async def read_rooms(
 async def read_room(
     room_id: int,
     db: Session = Depends(get_db),
-    current_user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
+    #current_user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
 ) -> RoomResponse:
     """Get a specific room by ID. Publicly accessible."""
     return room_service.get_room_by_id(db, room_id)

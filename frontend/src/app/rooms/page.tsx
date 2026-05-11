@@ -14,6 +14,8 @@ import {
   Laptop,
   Key,
   RotateCcw,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
@@ -22,6 +24,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+
+const API_BASE = "http://localhost:8000/api/v1";
 
 const BUILDING_NAMES: Record<string, string> = {
   AL: "Arts & Letters",
@@ -85,12 +89,18 @@ export default function RoomsPage() {
   const { isLoggedIn } = useAuth();
 
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [totalRooms, setTotalRooms] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [buildings, setBuildings] = useState<string[]>([]);
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [minCapacity, setMinCapacity] = useState("");
   const [requiredFeatures, setRequiredFeatures] = useState<string[]>([]);
   const [roomsLoading, setRoomsLoading] = useState(true);
+  const [featureCounts, setFeatureCounts] = useState<Record<string, number>>({});
+
 
   // If user is signed in, they should use the reservation page instead.
   useEffect(() => {
@@ -103,62 +113,79 @@ export default function RoomsPage() {
   useEffect(() => {
     if (isLoggedIn) return;
 
-    fetch("http://127.0.0.1:8000/api/v1/rooms/")
+    fetch(`${API_BASE}/rooms/buildings`)
       .then((res) => res.json())
-      .then((data: any) => {
-        const roomList: Room[] = Array.isArray(data)
-          ? data
-          : data.rooms ?? data.items ?? [];
-
-        setRooms(roomList);
-
-        const uniqueBuildings = Array.from(
-          new Set<string>(roomList.map((r) => String(r.building ?? "")))
-        )
-          .filter(Boolean)
-          .sort();
-
-        setBuildings(uniqueBuildings);
-        setRoomsLoading(false);
+      .then((data: string[]) => {
+        setBuildings(Array.isArray(data) ? data : []);
       })
-      .catch(() => setRoomsLoading(false));
+      .catch(() => {});
   }, [isLoggedIn]);
 
-  const filteredRooms = rooms.filter((room) => {
-    const query = searchQuery.trim().toLowerCase();
+  // Public browse rooms fetch with backend pagination + filters
+  useEffect(() => {
+    if (isLoggedIn) return;
 
-    const buildingName = BUILDING_NAMES[String(room.building ?? "")] ?? "";
+    setRoomsLoading(true);
+    setRooms([]);
+    setFeatureCounts({});
 
-    const fullRoomName = `${room.building} ${room.room_num}`.toLowerCase();
+    const params = new URLSearchParams();
+    params.set("page", String(currentPage));
+    params.set("page_size", "10");
 
-    const matchesSearch = query
-      ? fullRoomName.includes(query) ||
-        buildingName.toLowerCase().includes(query) ||
-        String(room.room_num ?? "").toLowerCase().includes(query) ||
-        (room.features ?? []).join(" ").toLowerCase().includes(query)
-      : true;
+    if (searchQuery.trim()) params.set("search", searchQuery.trim());
+    if (selectedBuilding) params.set("building", selectedBuilding);
+    if (minCapacity) params.set("min_capacity", minCapacity);
+    requiredFeatures.forEach((f) => params.append("features", f));
 
-    const matchesBuilding = selectedBuilding
-      ? room.building === selectedBuilding
-      : true;
+    const timer = setTimeout(() => {
+      fetch(`${API_BASE}/rooms/?${params}`)
+        .then((res) => res.json())
+        .then((data: any) => {
+          const roomList = data.rooms ?? data.items ?? [];
+          const total = data.total ?? roomList.length;
+          const pageSize = data.page_size ?? 10;
 
-    const matchesCapacity = minCapacity
-      ? room.capacity >= Number(minCapacity)
-      : true;
+          setRooms(roomList);
+          setTotalRooms(total);
+          setTotalPages(data.total_pages ?? Math.ceil(total / pageSize));
+          setFeatureCounts(data.feature_counts ?? {});
+          setRoomsLoading(false);
+        })
+        .catch(() => setRoomsLoading(false));
+    }, 300);
 
-    const matchesFeatures = requiredFeatures.every((f) =>
-      room.features?.includes(f)
-    );
-
-    return matchesSearch && matchesBuilding && matchesCapacity && matchesFeatures;
-  });
+    return () => clearTimeout(timer);
+  }, [
+    isLoggedIn,
+    currentPage,
+    searchQuery,
+    selectedBuilding,
+    minCapacity,
+    requiredFeatures,
+  ]);
 
   const resetFilters = () => {
-    setSearchQuery("");
-    setSelectedBuilding("");
-    setMinCapacity("");
-    setRequiredFeatures([]);
+  setSearchQuery("");
+  setSelectedBuilding("");
+  setMinCapacity("");
+  setRequiredFeatures([]);
+  setCurrentPage(1);
   };
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const pageButtons = (() => {
+    const max = 5;
+    let start = Math.max(1, currentPage - Math.floor(max / 2));
+    const end = Math.min(totalPages, start + max - 1);
+    start = Math.max(1, end - max + 1);
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  })();
 
   const hasActiveFilters =
     searchQuery || selectedBuilding || minCapacity || requiredFeatures.length > 0;
@@ -205,7 +232,7 @@ export default function RoomsPage() {
                     <Input
                       placeholder="Room, building, features..."
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) => {setSearchQuery(e.target.value);setCurrentPage(1);}}
                       className="pl-8 text-sm h-9"
                     />
                   </div>
@@ -219,7 +246,7 @@ export default function RoomsPage() {
                   </Label>
                   <select
                     value={selectedBuilding}
-                    onChange={(e) => setSelectedBuilding(e.target.value)}
+                    onChange={(e) => {setSelectedBuilding(e.target.value); setCurrentPage(1);}}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-card-foreground bg-card focus:outline-none focus:ring-2 focus:ring-[#C41230]"
                   >
                     <option value="">All Buildings</option>
@@ -242,7 +269,7 @@ export default function RoomsPage() {
                       min={1}
                       placeholder="e.g. 30"
                       value={minCapacity}
-                      onChange={(e) => setMinCapacity(e.target.value)}
+                      onChange={(e) => {setMinCapacity(e.target.value); setCurrentPage(1);}}
                       className="pl-8 text-sm h-9"
                     />
                   </div>
@@ -270,6 +297,7 @@ export default function RoomsPage() {
                                 ? [...prev, key]
                                 : prev.filter((f) => f !== key)
                             );
+                             setCurrentPage(1);
                           }}
                           className="accent-[#C41230] w-3.5 h-3.5"
                         />
@@ -279,7 +307,7 @@ export default function RoomsPage() {
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        {rooms.filter((r) => r.features?.includes(key)).length}
+                        {roomsLoading ? "..." : requiredFeatures.includes(key) ? totalRooms : featureCounts[key] ?? 0}
                       </span>
                     </label>
                   ))}
@@ -293,13 +321,13 @@ export default function RoomsPage() {
               <p className="text-sm text-muted-foreground">
                 {roomsLoading
                   ? "Loading rooms..."
-                  : `${filteredRooms.length} room${
-                      filteredRooms.length !== 1 ? "s" : ""
+                  : `${totalRooms} room${
+                      totalRooms !== 1 ? "s" : ""
                     } found`}
               </p>
             </div>
 
-            {!roomsLoading && filteredRooms.length === 0 && (
+            {!roomsLoading && rooms.length === 0 && (
               <Card className="shadow-sm">
                 <CardContent className="py-10 text-center text-sm text-muted-foreground">
                   No rooms match your filters.
@@ -307,7 +335,7 @@ export default function RoomsPage() {
               </Card>
             )}
 
-            {filteredRooms.map((room) => (
+            {rooms.map((room) => (
               <Card
                 key={room.id}
                 className="shadow-sm transition-all border-2 border-transparent hover:border-gray-200 hover:shadow-md"
@@ -363,6 +391,45 @@ export default function RoomsPage() {
                 </CardContent>
               </Card>
             ))}
+            {!roomsLoading && totalPages > 1 && (
+              <div className="flex items-center justify-center gap-1.5 mt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+
+                {pageButtons.map((pageNum) => (
+                  <Button
+                    key={pageNum}
+                    variant={pageNum === currentPage ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => goToPage(pageNum)}
+                    className={`h-8 w-8 p-0 ${
+                      pageNum === currentPage
+                        ? "bg-[#C41230] hover:bg-[#a80f29] text-white border-[#C41230]"
+                        : ""
+                    }`}
+                  >
+                    {pageNum}
+                  </Button>
+                ))}
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
           </section>
         </div>
       </div>

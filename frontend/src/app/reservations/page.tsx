@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 const API_BASE = "http://127.0.0.1:8000/api/v1";
 
@@ -212,7 +213,7 @@ export function ReservationsPageComponents() {
 
     const params = new URLSearchParams();
     params.set("page", String(currentPage));
-    params.set("page_size", "25");
+    params.set("page_size", "10");
     if (searchQuery.trim()) params.set("search", searchQuery.trim());
     if (selectedBuilding) params.set("building", selectedBuilding);
     if (minCapacity) params.set("min_capacity", minCapacity);
@@ -360,7 +361,10 @@ export function ReservationsPageComponents() {
     setSubmitSuccess(false);
   };
 
-  const goToPage = (page: number) => setCurrentPage(page);
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const pageButtons = (() => {
     const max = 5;
@@ -935,8 +939,8 @@ export function ReservationsPageComponents() {
             <Card className="shadow-sm">
               <CardContent className="pt-5 pb-5 flex flex-col gap-1">
                 <p className="font-semibold text-card-foreground text-sm mb-2">Quick Actions</p>
-                <a
-                  href="/"
+                <Link
+                  href="/home"
                   className="flex items-center justify-between px-1 py-2.5 rounded-md hover:bg-gray-50 transition group"
                 >
                   <div className="flex items-center gap-2.5">
@@ -944,7 +948,7 @@ export function ReservationsPageComponents() {
                     <span className="text-sm text-card-foreground">My Reservations</span>
                   </div>
                   <span className="text-gray-300 group-hover:text-gray-500 text-base">&#8250;</span>
-                </a>
+                </Link>
                 <Separator />
               </CardContent>
             </Card>

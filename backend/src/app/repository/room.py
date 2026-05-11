@@ -45,7 +45,7 @@ class RoomRepository:
         features: list[str] | None = None,
         avail_from: datetime | None = None,
         avail_to: datetime | None = None,
-    ) -> tuple[list[Room], int]:
+    ) -> tuple[list[Room], int, dict[str, int]]:
         """Return (rooms, total) applying server-side filters and pagination."""
         query = db.query(Room)
 
@@ -66,8 +66,8 @@ class RoomRepository:
         if features:
             for feature in features:
                 # Match exact feature key inside the JSON array string
-                query = query.filter(cast(Room.features, String).like(f'%"{feature}"%'))
-
+                query = query.filter(cast(Room.features, String).ilike(f"%{feature}%"))
+               
         if avail_from and avail_to:
             # Strip tz info so comparison works against naive DB datetimes
             from_dt = avail_from.replace(tzinfo=None)
@@ -80,13 +80,21 @@ class RoomRepository:
             query = query.filter(~conflict.exists())
 
         total = query.count()
+
+        feature_counts: dict[str, int] = {}
+        all_filtered_rooms = query.with_entities(Room.features).all()
+        for (room_features,) in all_filtered_rooms:
+            if room_features:
+                for feature in room_features:
+                    feature_counts[feature] = feature_counts.get(feature, 0) + 1
+
         rooms = (
             query.order_by(Room.building, Room.room_num)
             .offset((page - 1) * page_size)
             .limit(page_size)
             .all()
         )
-        return rooms, total
+        return rooms, total, feature_counts
 
     @staticmethod
     def create(db: Session, room: RoomCreate) -> Room:

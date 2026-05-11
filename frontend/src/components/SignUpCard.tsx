@@ -35,7 +35,7 @@ const signupSchema = z
     firstName: z.string(),
     lastName: z.string(),
     role: z.enum(['Student', 'Faculty', 'Admin']),
-		email: z.string().email("Invalid email address."),
+		email: z.string().regex(/^[a-zA-Z0-9]+@sdsu\.edu$/i, "Email must be a valid SDSU email address (e.g. jsmith@sdsu.edu)."),
 		password: z
 			.string()
 			.min(4, "Password must be at least 4 characters.")

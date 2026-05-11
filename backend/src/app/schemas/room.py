@@ -40,3 +40,4 @@ class PaginatedRoomResponse(BaseModel):
     page: int
     page_size: int
     total_pages: int
+    feature_counts: dict[str, int] = {}
